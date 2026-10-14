@@ -10,6 +10,7 @@ import {
   clearAllAccounts, 
   resetStudioData 
 } from './data.js';
+import confetti from 'canvas-confetti';
 import { renderViewsTrendChart, renderAudienceDistributionChart, initCharts } from './charts.js';
 import { playClickSound, playChimeSound, playSuccessSound } from './sound.js';
 
@@ -28,30 +29,78 @@ export function renderTikTokView(data, onAskAiVideo, onShowToast, onStateChanged
   const activeAcc = data.activeAccount || (accountsList[0]?.id || 'all');
   const allVideos = data.videos || [];
 
-  // If no accounts are connected, display an intuitive Empty State
+  // If no accounts are connected, display an intuitive Instant Connect State
   if (accountsList.length === 0) {
     container.innerHTML = `
-      <div class="account-hero-card" style="text-align: center; padding: 48px 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;">
+      <div class="account-hero-card" style="text-align: center; padding: 40px 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;">
         <div style="width: 48px; height: 48px; border-radius: 50%; background: #181920; border: 1px solid #272a34; display: flex; align-items: center; justify-content: center; font-size: 20px;">
           📱
         </div>
         <div>
-          <h3 style="font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 6px;">Belum Ada Akun TikTok Terhubung</h3>
+          <h3 style="font-size: 17px; font-weight: 600; color: #fff; margin-bottom: 4px;">Hubungkan Akun TikTok Anda</h3>
           <p style="color: var(--text-muted); font-size: 13px; max-width: 460px; margin: 0 auto; line-height: 1.5;">
-            Hubungkan akun TikTok Anda secara manual dengan memasukkan username dan statistik profil studio.
+            Ketik username TikTok Anda di bawah untuk langsung masuk dan sinkronkan studio Anda secara instan.
           </p>
         </div>
-        <div style="display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; justify-content: center;">
-          <button class="btn btn-primary" id="btnConnectAccountEmptyBtn">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
-            + Hubungkan Akun TikTok
+
+        <!-- Quick 1-Step Input Directly on the Page -->
+        <div style="display: flex; gap: 8px; width: 100%; max-width: 420px; margin-top: 4px;">
+          <input type="text" id="inlineConnectHandle" class="form-control" placeholder="@username_tiktok_anda" style="font-size: 13.5px;" />
+          <button class="btn btn-primary" id="btnInlineConnect" style="white-space: nowrap; padding: 0 16px;">
+            Hubungkan Langsung
           </button>
-          <button class="btn btn-secondary" id="btnRestoreDemoBtn">
-            Muat Data Contoh Demo
+        </div>
+
+        <!-- 1-Click Fast Presets for Kaycee's 2 Accounts -->
+        <div style="display: flex; gap: 8px; margin-top: 4px; flex-wrap: wrap; justify-content: center; align-items: center;">
+          <span style="font-size: 11px; color: var(--text-muted);">Pilih Cepat:</span>
+          <button class="btn btn-secondary btn-sm" id="btnPresetGamingInline">
+            🎮 Akun 1 (@kaycee.gaming)
+          </button>
+          <button class="btn btn-secondary btn-sm" id="btnPresetLifestyleInline">
+            📱 Akun 2 (@kaycee.lifestyle)
+          </button>
+          <button class="btn btn-secondary btn-sm" id="btnConnectAccountEmptyBtn" style="color: var(--text-muted);">
+            Opsi Lanjutan...
           </button>
         </div>
       </div>
     `;
+
+    const handleConnect = (handleStr, catStr = 'Gaming & Esports') => {
+      if (!handleStr || handleStr.trim() === '@' || handleStr.trim() === '') {
+        alert('Silakan masukkan username TikTok Anda (contoh: @kayceegaming)');
+        return;
+      }
+      const acc = buildQuickAccountData(handleStr, null, catStr);
+      saveOrUpdateAccount(data, acc);
+      playSuccessSound();
+      confetti({ particleCount: 40, spread: 60, origin: { y: 0.6 } });
+      if (onShowToast) onShowToast(`Akun ${acc.handle} berhasil terhubung!`);
+      if (onStateChanged) onStateChanged();
+      renderTikTokView(data, onAskAiVideo, onShowToast, onStateChanged);
+    };
+
+    document.getElementById('btnInlineConnect')?.addEventListener('click', () => {
+      const val = document.getElementById('inlineConnectHandle')?.value;
+      handleConnect(val);
+    });
+
+    document.getElementById('inlineConnectHandle')?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const val = document.getElementById('inlineConnectHandle')?.value;
+        handleConnect(val);
+      }
+    });
+
+    document.getElementById('btnPresetGamingInline')?.addEventListener('click', () => {
+      handleConnect('@kaycee.gaming', 'Gaming & Esports');
+    });
+
+    document.getElementById('btnPresetLifestyleInline')?.addEventListener('click', () => {
+      handleConnect('@kaycee.lifestyle', 'Lifestyle & Vlog');
+    });
 
     document.getElementById('btnConnectAccountEmptyBtn')?.addEventListener('click', () => {
       playClickSound();
@@ -59,15 +108,6 @@ export function renderTikTokView(data, onAskAiVideo, onShowToast, onStateChanged
         if (onStateChanged) onStateChanged();
         renderTikTokView(data, onAskAiVideo, onShowToast, onStateChanged);
       });
-    });
-
-    document.getElementById('btnRestoreDemoBtn')?.addEventListener('click', () => {
-      playClickSound();
-      const restored = resetStudioData();
-      Object.assign(data, restored);
-      if (onShowToast) onShowToast('Data demo berhasil dimuat ulang!');
-      if (onStateChanged) onStateChanged();
-      renderTikTokView(data, onAskAiVideo, onShowToast, onStateChanged);
     });
 
     return;
@@ -798,7 +838,45 @@ export function showAddVideoModal(data, onAskAiVideo, onShowToast, onDone) {
 }
 
 /**
- * Show Modal to Connect or Edit a TikTok Account Manually
+ * Helper to build quick account data from username or preset
+ */
+export function buildQuickAccountData(handleInput, existing = null, categoryOverride = null) {
+  let cleanHandle = (handleInput || '').trim();
+  if (cleanHandle.includes('tiktok.com/@')) {
+    cleanHandle = '@' + cleanHandle.split('tiktok.com/@')[1].split('/')[0].split('?')[0];
+  }
+  if (!cleanHandle.startsWith('@')) {
+    cleanHandle = '@' + cleanHandle;
+  }
+  
+  const rawName = cleanHandle.replace('@', '').replace(/[_.]/g, ' ');
+  const displayName = rawName ? rawName.replace(/\b\w/g, l => l.toUpperCase()) : 'Kaycee Creator';
+  const isLifestyle = cleanHandle.toLowerCase().includes('life') || (categoryOverride && categoryOverride.toLowerCase().includes('life'));
+
+  return {
+    id: existing ? existing.id : 'acc_' + cleanHandle.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase(),
+    handle: cleanHandle,
+    displayName: existing?.displayName || displayName,
+    category: categoryOverride || (existing?.category || (isLifestyle ? 'Lifestyle & Vlog' : 'Gaming & Esports')),
+    accentColor: existing?.accentColor || (isLifestyle ? '#fb7185' : '#38bdf8'),
+    followers: existing?.followers ?? (isLifestyle ? 420000 : 850000),
+    following: existing?.following ?? 140,
+    totalLikes: existing?.totalLikes ?? (isLifestyle ? 8900000 : 18400000),
+    totalViewsMonth: existing?.totalViewsMonth ?? (isLifestyle ? 6200000 : 14800000),
+    engagementRate: existing?.engagementRate ?? (isLifestyle ? 7.8 : 9.4),
+    estMonthlyRevenue: existing?.estMonthlyRevenue ?? (isLifestyle ? 18500000 : 38500000),
+    bio: existing?.bio || (isLifestyle 
+      ? `Daily Vlog, Lifestyle & Creator Journey | ${cleanHandle} | Contact: kayceestudio.com` 
+      : `Gaming Creator & Streamer | MLBB & Valorant | ${cleanHandle} | Business: kayceestudio.com`),
+    avatar: existing?.avatar || '/assets/avatar.jpg',
+    avgWatchTime: existing?.avgWatchTime || '32s',
+    completionRate: existing?.completionRate || '65%',
+    weeklyGrowth: existing?.weeklyGrowth || '+8.4%'
+  };
+}
+
+/**
+ * Show Modal to Connect or Edit a TikTok Account with 1-Click Fast Connect
  */
 export function showConnectAccountModal(data, accountIdToEdit = null, onDone) {
   const modal = document.getElementById('globalModal');
@@ -808,120 +886,175 @@ export function showConnectAccountModal(data, accountIdToEdit = null, onDone) {
 
   const existing = accountIdToEdit && data.accounts ? data.accounts[accountIdToEdit] : null;
 
-  modalTitle.textContent = existing ? `Edit Data Akun: ${existing.handle}` : 'Hubungkan Akun TikTok Manual';
+  modalTitle.textContent = existing ? `Edit Data Akun: ${existing.handle}` : 'Hubungkan Akun TikTok';
+
   modalBody.innerHTML = `
-    <form id="connectAccountForm">
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Username / Handle TikTok *</label>
-          <input type="text" class="form-control" id="accHandle" placeholder="@username_asli" value="${existing ? existing.handle : '@'}" required />
-          <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Awali dengan @ (contoh: @kayceeofficial)</div>
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <!-- Quick Connect Box -->
+      <div style="background: #0e0f13; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px;">
+        <label class="form-label" style="margin-bottom: 6px;">Username atau Link TikTok</label>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" class="form-control" id="accHandle" placeholder="@username_anda (contoh: @kayceeofficial)" value="${existing ? existing.handle : ''}" style="font-size: 13.5px;" />
+          <button class="btn btn-primary" id="btnQuickSubmitModal" style="white-space: nowrap; padding: 0 16px;">
+            ${existing ? 'Simpan' : 'Hubungkan Langsung'}
+          </button>
         </div>
-        <div class="form-group">
-          <label class="form-label">Nama Tampilan (Display Name) *</label>
-          <input type="text" class="form-control" id="accDisplayName" placeholder="Nama Profil TikTok" value="${existing ? existing.displayName : ''}" required />
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Kategori Konten</label>
-          <select class="form-control" id="accCategory">
-            <option value="Gaming & Esports" ${existing?.category?.includes('Gaming') ? 'selected' : ''}>Gaming & Esports</option>
-            <option value="Tech & Gadget" ${existing?.category?.includes('Tech') ? 'selected' : ''}>Tech & Gadget</option>
-            <option value="Lifestyle & Vlog" ${existing?.category?.includes('Lifestyle') ? 'selected' : ''}>Lifestyle & Daily Vlog</option>
-            <option value="Edukasi & Tutorial" ${existing?.category?.includes('Edukasi') ? 'selected' : ''}>Edukasi & Tutorial</option>
-            <option value="Entertainment" ${existing?.category?.includes('Entertainment') ? 'selected' : ''}>Entertainment & Hiburan</option>
-            <option value="Fashion & Beauty" ${existing?.category?.includes('Fashion') ? 'selected' : ''}>Fashion & Beauty</option>
-            <option value="Creator Studio">Creator Studio</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Warna Label Aksen</label>
-          <select class="form-control" id="accColor">
-            <option value="#00f2fe" ${existing?.accentColor === '#00f2fe' ? 'selected' : ''}>Cyan Neon (#00f2fe)</option>
-            <option value="#ff0050" ${existing?.accentColor === '#ff0050' ? 'selected' : ''}>TikTok Pink (#ff0050)</option>
-            <option value="#a855f7" ${existing?.accentColor === '#a855f7' ? 'selected' : ''}>Purple Neon (#a855f7)</option>
-            <option value="#10b981" ${existing?.accentColor === '#10b981' ? 'selected' : ''}>Emerald Green (#10b981)</option>
-            <option value="#f59e0b" ${existing?.accentColor === '#f59e0b' ? 'selected' : ''}>Amber Gold (#f59e0b)</option>
-          </select>
+        <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 5px;">
+          Cukup masukkan username TikTok Anda untuk langsung sinkronkan studio.
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Jumlah Followers</label>
-          <input type="number" class="form-control" id="accFollowers" placeholder="10000" value="${existing ? existing.followers : 10000}" />
+      <!-- Quick 1-Click Presets for Kaycee Studio Accounts -->
+      ${!existing ? `
+        <div>
+          <div style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">
+            Atau Pilih Cepat Akun Studio:
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button class="btn btn-secondary" id="btnModalPresetGaming" style="padding: 10px 12px; display: flex; align-items: center; gap: 10px; justify-content: flex-start; text-align: left;">
+              <span style="font-size: 20px;">🎮</span>
+              <div>
+                <div style="font-weight: 600; color: #fff; font-size: 12.5px;">@kaycee.gaming</div>
+                <div style="font-size: 10.5px; color: var(--text-muted);">Akun Utama (Gaming)</div>
+              </div>
+            </button>
+            <button class="btn btn-secondary" id="btnModalPresetLifestyle" style="padding: 10px 12px; display: flex; align-items: center; gap: 10px; justify-content: flex-start; text-align: left;">
+              <span style="font-size: 20px;">📱</span>
+              <div>
+                <div style="font-weight: 600; color: #fff; font-size: 12.5px;">@kaycee.lifestyle</div>
+                <div style="font-size: 10.5px; color: var(--text-muted);">Akun Kedua (Vlog)</div>
+              </div>
+            </button>
+          </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Total Likes Akumulasi</label>
-          <input type="number" class="form-control" id="accTotalLikes" placeholder="50000" value="${existing ? existing.totalLikes : 50000}" />
-        </div>
-      </div>
+      ` : ''}
 
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Estimasi Tayangan (Views Bulanan)</label>
-          <input type="number" class="form-control" id="accViewsMonth" placeholder="100000" value="${existing ? existing.totalViewsMonth : 100000}" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Engagement Rate (%)</label>
-          <input type="number" step="0.1" class="form-control" id="accEngagement" placeholder="6.5" value="${existing ? existing.engagementRate : 6.5}" />
-        </div>
-      </div>
+      <!-- Collapsible Advanced Settings (Optional) -->
+      <div style="border-top: 1px solid var(--border-subtle); padding-top: 10px; margin-top: 4px;">
+        <button type="button" id="btnToggleAdvanced" style="background: transparent; border: none; color: var(--text-muted); font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 0;">
+          <span id="advChevron" style="font-size: 11px;">▸</span>
+          <span>Pengaturan Metrik Manual Lanjutan (Opsional)</span>
+        </button>
 
-      <div class="form-group">
-        <label class="form-label">Bio Profil TikTok</label>
-        <textarea class="form-control" id="accBio" rows="2" placeholder="Tuliskan bio profil TikTok Anda...">${existing ? existing.bio : ''}</textarea>
-      </div>
+        <div id="advancedSettingsBox" style="${existing ? 'display: block;' : 'display: none;'} margin-top: 12px;">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Nama Tampilan (Display Name)</label>
+              <input type="text" class="form-control" id="accDisplayName" placeholder="Nama Profil TikTok" value="${existing ? existing.displayName : ''}" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Kategori Konten</label>
+              <select class="form-control" id="accCategory">
+                <option value="Gaming & Esports" ${existing?.category?.includes('Gaming') ? 'selected' : ''}>Gaming & Esports</option>
+                <option value="Lifestyle & Vlog" ${existing?.category?.includes('Lifestyle') ? 'selected' : ''}>Lifestyle & Daily Vlog</option>
+                <option value="Tech & Gadget" ${existing?.category?.includes('Tech') ? 'selected' : ''}>Tech & Gadget</option>
+                <option value="Edukasi & Tutorial" ${existing?.category?.includes('Edukasi') ? 'selected' : ''}>Edukasi & Tutorial</option>
+                <option value="Creator Studio">Creator Studio</option>
+              </select>
+            </div>
+          </div>
 
-      <div class="form-group">
-        <label class="form-label">URL Foto Profil / Avatar (Opsional)</label>
-        <input type="text" class="form-control" id="accAvatar" placeholder="/assets/avatar.jpg atau link gambar" value="${existing ? existing.avatar : '/assets/avatar.jpg'}" />
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Jumlah Followers</label>
+              <input type="number" class="form-control" id="accFollowers" placeholder="10000" value="${existing ? existing.followers : 850000}" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Total Likes</label>
+              <input type="number" class="form-control" id="accTotalLikes" placeholder="50000" value="${existing ? existing.totalLikes : 18400000}" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Bio Profil</label>
+            <textarea class="form-control" id="accBio" rows="2" placeholder="Bio profil TikTok...">${existing ? existing.bio : ''}</textarea>
+          </div>
+        </div>
       </div>
-    </form>
+    </div>
   `;
 
   modalFooter.innerHTML = `
     <button class="btn btn-secondary" onclick="document.getElementById('globalModal').classList.remove('open')">Batal</button>
-    <button class="btn btn-primary" id="btnSaveAccountModal">
-      ${existing ? 'Perbarui Akun' : 'Hubungkan Akun'}
-    </button>
   `;
 
-  document.getElementById('btnSaveAccountModal')?.addEventListener('click', () => {
-    const handle = document.getElementById('accHandle').value.trim();
-    const displayName = document.getElementById('accDisplayName').value.trim();
+  // Toggle advanced options
+  const btnToggle = document.getElementById('btnToggleAdvanced');
+  const advBox = document.getElementById('advancedSettingsBox');
+  const advChevron = document.getElementById('advChevron');
+  if (btnToggle && advBox) {
+    btnToggle.addEventListener('click', () => {
+      const isOpen = advBox.style.display !== 'none';
+      advBox.style.display = isOpen ? 'none' : 'block';
+      if (advChevron) advChevron.textContent = isOpen ? '▸' : '▾';
+    });
+  }
 
-    if (!handle || handle === '@') {
-      alert('Mohon masukkan handle TikTok yang valid (contoh: @kayceeofficial).');
+  // Submit helper
+  const submitWithHandle = (handleStr, catStr = 'Gaming & Esports') => {
+    if (!handleStr || handleStr.trim() === '@' || handleStr.trim() === '') {
+      alert('Silakan masukkan username TikTok Anda (contoh: @kayceegaming).');
       return;
     }
 
-    const followers = parseInt(document.getElementById('accFollowers').value) || 0;
-    const accountData = {
-      id: existing ? existing.id : 'acc_' + Date.now().toString(36),
-      handle,
-      displayName: displayName || handle,
-      category: document.getElementById('accCategory').value,
-      accentColor: document.getElementById('accColor').value,
-      followers,
-      totalLikes: parseInt(document.getElementById('accTotalLikes').value) || 0,
-      totalViewsMonth: parseInt(document.getElementById('accViewsMonth').value) || 0,
-      engagementRate: parseFloat(document.getElementById('accEngagement').value) || 5.0,
-      bio: document.getElementById('accBio').value.trim() || 'TikTok Content Creator',
-      avatar: document.getElementById('accAvatar').value.trim() || '/assets/avatar.jpg',
-      following: existing ? existing.following : 120,
-      estMonthlyRevenue: Math.round(followers * 45),
-      avgWatchTime: existing ? existing.avgWatchTime : '35s',
-      completionRate: existing ? existing.completionRate : '60%',
-      weeklyGrowth: '+5.0%'
-    };
+    const isAdvOpen = advBox && advBox.style.display !== 'none';
+    let accountData;
+
+    if (isAdvOpen || existing) {
+      const followers = parseInt(document.getElementById('accFollowers')?.value) || 0;
+      const cleanHandle = handleStr.startsWith('@') ? handleStr : `@${handleStr}`;
+      const dispName = document.getElementById('accDisplayName')?.value.trim();
+      const cat = document.getElementById('accCategory')?.value || catStr;
+      const isLife = cat.includes('Lifestyle');
+
+      accountData = {
+        id: existing ? existing.id : 'acc_' + cleanHandle.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase(),
+        handle: cleanHandle,
+        displayName: dispName || cleanHandle.replace('@', ''),
+        category: cat,
+        accentColor: isLife ? '#fb7185' : '#38bdf8',
+        followers,
+        totalLikes: parseInt(document.getElementById('accTotalLikes')?.value) || 0,
+        totalViewsMonth: Math.round(followers * 15),
+        engagementRate: isLife ? 7.8 : 9.4,
+        bio: document.getElementById('accBio')?.value.trim() || 'TikTok Content Creator',
+        avatar: existing?.avatar || '/assets/avatar.jpg',
+        following: existing ? existing.following : 120,
+        estMonthlyRevenue: Math.round(followers * 45),
+        avgWatchTime: '32s',
+        completionRate: '65%',
+        weeklyGrowth: '+5.0%'
+      };
+    } else {
+      accountData = buildQuickAccountData(handleStr, existing, catStr);
+    }
 
     saveOrUpdateAccount(data, accountData);
     playSuccessSound();
+    confetti({ particleCount: 40, spread: 60, origin: { y: 0.6 } });
     modal.classList.remove('open');
     if (onDone) onDone(accountData);
+  };
+
+  document.getElementById('btnQuickSubmitModal')?.addEventListener('click', () => {
+    const handle = document.getElementById('accHandle')?.value.trim();
+    submitWithHandle(handle);
+  });
+
+  document.getElementById('accHandle')?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const handle = document.getElementById('accHandle')?.value.trim();
+      submitWithHandle(handle);
+    }
+  });
+
+  document.getElementById('btnModalPresetGaming')?.addEventListener('click', () => {
+    submitWithHandle('@kaycee.gaming', 'Gaming & Esports');
+  });
+
+  document.getElementById('btnModalPresetLifestyle')?.addEventListener('click', () => {
+    submitWithHandle('@kaycee.lifestyle', 'Lifestyle & Vlog');
   });
 
   modal.classList.add('open');
