@@ -31,22 +31,22 @@ export function renderTikTokView(data, onAskAiVideo, onShowToast, onStateChanged
   // If no accounts are connected, display an intuitive Empty State
   if (accountsList.length === 0) {
     container.innerHTML = `
-      <div class="account-hero-card" style="text-align: center; padding: 56px 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;">
-        <div style="width: 72px; height: 72px; border-radius: 50%; background: rgba(0, 242, 254, 0.1); border: 2px dashed var(--accent-cyan); display: flex; align-items: center; justify-content: center; font-size: 32px;">
+      <div class="account-hero-card" style="text-align: center; padding: 48px 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;">
+        <div style="width: 48px; height: 48px; border-radius: 50%; background: #181920; border: 1px solid #272a34; display: flex; align-items: center; justify-content: center; font-size: 20px;">
           📱
         </div>
         <div>
-          <h3 style="font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px;">Belum Ada Akun TikTok Terhubung</h3>
-          <p style="color: var(--text-muted); font-size: 14px; max-width: 540px; margin: 0 auto; line-height: 1.6;">
-            Hubungkan akun TikTok asli Anda secara manual. Anda dapat memasukkan username, metrik follower, likes, dan mulai mengelola video studio.
+          <h3 style="font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 6px;">Belum Ada Akun TikTok Terhubung</h3>
+          <p style="color: var(--text-muted); font-size: 13px; max-width: 460px; margin: 0 auto; line-height: 1.5;">
+            Hubungkan akun TikTok Anda secara manual dengan memasukkan username dan statistik profil studio.
           </p>
         </div>
-        <div style="display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; justify-content: center;">
-          <button class="btn btn-primary" id="btnConnectAccountEmptyBtn" style="padding: 11px 24px; font-size: 14px;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
-            + Hubungkan Akun TikTok Asli
+        <div style="display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; justify-content: center;">
+          <button class="btn btn-primary" id="btnConnectAccountEmptyBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+            + Hubungkan Akun TikTok
           </button>
-          <button class="btn btn-secondary" id="btnRestoreDemoBtn" style="padding: 11px 20px; font-size: 14px;">
+          <button class="btn btn-secondary" id="btnRestoreDemoBtn">
             Muat Data Contoh Demo
           </button>
         </div>

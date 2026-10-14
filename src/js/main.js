@@ -94,7 +94,7 @@ export function renderAccountSwitcher() {
 
   if (list.length === 0) {
     container.innerHTML = `
-      <button class="account-chip active" id="btnConnectAccountTopbar" style="border-style: dashed; border-color: var(--accent-cyan); color: var(--accent-cyan);">
+      <button class="account-chip" id="btnConnectAccountTopbar" style="border-color: #272a34; color: #a1a1aa;">
         <span>+ Hubungkan Akun TikTok</span>
       </button>
     `;
@@ -116,8 +116,8 @@ export function renderAccountSwitcher() {
       : acc.followers;
 
     html += `
-      <button class="account-chip ${isActive ? 'active' : ''}" data-account="${acc.id}" style="${isActive ? `border-color: ${acc.accentColor};` : ''}">
-        <span class="account-indicator-dot" style="background: ${acc.accentColor};"></span>
+      <button class="account-chip ${isActive ? 'active' : ''}" data-account="${acc.id}">
+        <span class="account-indicator-dot" style="background: ${acc.accentColor || '#38bdf8'};"></span>
         <span>${acc.handle}</span>
         <span class="chip-followers">${followersK}</span>
       </button>
@@ -138,11 +138,11 @@ export function renderAccountSwitcher() {
   }
 
   html += `
-    <button class="account-chip" id="btnConnectAccountTopbar" title="Hubungkan Akun Baru" style="padding: 6px 10px; background: rgba(0, 242, 254, 0.08); border-color: rgba(0, 242, 254, 0.3); color: var(--accent-cyan);">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+    <button class="account-chip" id="btnConnectAccountTopbar" title="Hubungkan Akun Baru" style="padding: 4px 8px; color: #a1a1aa;">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
     </button>
-    <button class="account-chip" id="btnManageAccountsTopbar" title="Kelola / Hapus Akun" style="padding: 6px 10px; opacity: 0.85;">
-      ⚙️
+    <button class="account-chip" id="btnManageAccountsTopbar" title="Kelola Akun" style="padding: 4px 8px; color: #a1a1aa;">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     </button>
   `;
 
