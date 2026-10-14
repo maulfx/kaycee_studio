@@ -66,10 +66,10 @@ export function renderContractsView(data, onAskAiContract, onShowToast) {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
           </div>
         </div>
-        <div class="stat-value">Rp ${(totalValue / 1000000).toLocaleString('id-ID')} Juta</div>
+        <div class="stat-value">${totalValue > 0 ? 'Rp ' + (totalValue / 1000000).toLocaleString('id-ID') + ' Juta' : 'Rp 0'}</div>
         <div class="stat-trend trend-up">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
-          5 Brand Aktif & Pipeline
+          ${allContracts.length} Brand Terdaftar
         </div>
       </div>
 
@@ -82,7 +82,7 @@ export function renderContractsView(data, onAskAiContract, onShowToast) {
         </div>
         <div class="stat-value">${activeCount} Kontrak</div>
         <div class="stat-trend" style="color: var(--accent-cyan);">
-          ASUS ROG & Moonton Official
+          ${allContracts.length > 0 ? (allContracts.filter(c => c.status === 'active').map(c => c.brand).slice(0, 2).join(' & ') || 'Tidak ada aktif') : 'Belum ada kontrak'}
         </div>
       </div>
 
@@ -93,9 +93,9 @@ export function renderContractsView(data, onAskAiContract, onShowToast) {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </div>
         </div>
-        <div class="stat-value">Rp ${(pendingValue / 1000000).toLocaleString('id-ID')} Juta</div>
+        <div class="stat-value">${pendingValue > 0 ? 'Rp ' + (pendingValue / 1000000).toLocaleString('id-ID') + ' Juta' : 'Rp 0'}</div>
         <div class="stat-trend" style="color: var(--accent-pink);">
-          Tokopedia Hub & Hoyoverse
+          ${allContracts.filter(c => c.status === 'pending' || c.status === 'review').length} Menunggu pelunasan
         </div>
       </div>
 
@@ -108,7 +108,7 @@ export function renderContractsView(data, onAskAiContract, onShowToast) {
         </div>
         <div class="stat-value">${completedDeliverables} / ${totalDeliverables}</div>
         <div class="stat-trend trend-up">
-          ${Math.round((completedDeliverables / (totalDeliverables || 1)) * 100)}% Selesai Tepat Waktu
+          ${totalDeliverables > 0 ? Math.round((completedDeliverables / totalDeliverables) * 100) + '% Selesai' : '0 Deliverables'}
         </div>
       </div>
     </div>
@@ -126,13 +126,28 @@ export function renderContractsView(data, onAskAiContract, onShowToast) {
 
     <!-- Contracts Grid -->
     <div class="contract-grid">
-      ${filtered.length === 0 ? `
+      ${allContracts.length === 0 ? `
+        <div class="account-hero-card" style="grid-column: 1 / -1; text-align: center; padding: 56px 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;">
+          <div style="font-size: 32px;">📑</div>
+          <h3 style="font-size: 20px; font-weight: 700; color: #fff;">Belum Ada Kontrak Terdaftar</h3>
+          <p style="color: var(--text-muted); font-size: 14px; max-width: 500px; margin: 0 auto; line-height: 1.5;">
+            Kelola kerjasama brand sponsor Anda di sini. Catat nilai kontrak, termin pembayaran DP & pelunasan, serta checklist deliverables video.
+          </p>
+          <button class="btn btn-primary" id="btnEmptyCreateContract" style="padding: 10px 22px; font-size: 14px; margin-top: 6px;">
+            + Buat Kontrak Pertama
+          </button>
+        </div>
+      ` : filtered.length === 0 ? `
         <div style="grid-column: 1 / -1; padding: 48px; text-align: center; color: var(--text-muted);">
           Tidak ada data kontrak pada status ini.
         </div>
       ` : filtered.map(contract => renderContractCard(contract)).join('')}
     </div>
   `;
+
+  document.getElementById('btnEmptyCreateContract')?.addEventListener('click', () => {
+    document.getElementById('btnCreateContract')?.click();
+  });
 
   attachContractListeners(data, onAskAiContract, onShowToast);
 }

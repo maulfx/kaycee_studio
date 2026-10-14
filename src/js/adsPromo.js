@@ -40,6 +40,7 @@ export function renderAdsPromoView(data, onAskAiPromo, onShowToast) {
     </div>
 
     <!-- Stat Grid -->
+    <!-- Stat Grid -->
     <div class="stat-grid">
       <div class="stat-card">
         <div class="stat-card-header">
@@ -48,10 +49,10 @@ export function renderAdsPromoView(data, onAskAiPromo, onShowToast) {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </div>
         </div>
-        <div class="stat-value">Rp ${(totalCommission / 1000000).toLocaleString('id-ID', { maximumFractionDigits: 1 })}M</div>
+        <div class="stat-value">${totalCommission > 0 ? 'Rp ' + (totalCommission / 1000000).toLocaleString('id-ID', { maximumFractionDigits: 1 }) + 'M' : 'Rp 0'}</div>
         <div class="stat-trend trend-up">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
-          +42.8% <span class="trend-sub">Bulan ini</span>
+          ${codes.length > 0 ? '+42.8% Bulan ini' : 'Belum ada komisi'}
         </div>
       </div>
 
@@ -62,7 +63,7 @@ export function renderAdsPromoView(data, onAskAiPromo, onShowToast) {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
           </div>
         </div>
-        <div class="stat-value">Rp ${(totalGrossSales / 1000000).toLocaleString('id-ID', { maximumFractionDigits: 1 })}M</div>
+        <div class="stat-value">${totalGrossSales > 0 ? 'Rp ' + (totalGrossSales / 1000000).toLocaleString('id-ID', { maximumFractionDigits: 1 }) + 'M' : 'Rp 0'}</div>
         <div class="stat-trend trend-up">
           Gross Merchandise Value (GMV)
         </div>
@@ -77,7 +78,7 @@ export function renderAdsPromoView(data, onAskAiPromo, onShowToast) {
         </div>
         <div class="stat-value">${totalRedemptions.toLocaleString()} Kali</div>
         <div class="stat-trend" style="color: var(--accent-pink);">
-          Tingkat Konversi 7.8%
+          ${codes.length > 0 ? 'Tingkat Konversi Aktif' : 'Belum ada transaksi'}
         </div>
       </div>
 
@@ -88,7 +89,7 @@ export function renderAdsPromoView(data, onAskAiPromo, onShowToast) {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
           </div>
         </div>
-        <div class="stat-value">${activeCampaigns} Project</div>
+        <div class="stat-value">${activeCampaigns} Proyek</div>
         <div class="stat-trend" style="color: var(--accent-purple);">
           Pipeline Produksi Studio
         </div>
@@ -136,7 +137,13 @@ export function renderAdsPromoView(data, onAskAiPromo, onShowToast) {
             </tr>
           </thead>
           <tbody>
-            ${codes.map(code => `
+            ${codes.length === 0 ? `
+              <tr>
+                <td colspan="8" style="text-align: center; padding: 40px 16px; color: var(--text-muted); font-size: 13px;">
+                  Belum ada kode promo aktif. Klik "+ Tambah Kode Promo" untuk mencatat voucher atau link affiliate Anda.
+                </td>
+              </tr>
+            ` : codes.map(code => `
               <tr>
                 <td>
                   <span class="code-pill">${code.code}</span>

@@ -2,7 +2,13 @@
  * Kaycee Studio Pro - Master Application Controller
  */
 
-import { getStudioData, saveStudioData, resetStudioData } from './data.js';
+import { 
+  getStudioData, 
+  saveStudioData, 
+  resetStudioData,
+  loadDemoData,
+  clearEntireStudioData 
+} from './data.js';
 import { 
   renderTikTokView, 
   showConnectAccountModal, 
@@ -188,9 +194,58 @@ export function switchActiveAccount(accId) {
 }
 
 /**
+ * Update Sidebar Nav Badges and Revenue Progress Dynamically
+ */
+export function updateSidebarMetrics() {
+  if (!appState) return;
+
+  const accountsCount = Object.keys(appState.accounts || {}).length;
+  const activeContractsCount = (appState.contracts || []).filter(c => c.status === 'active').length;
+  const promoCodesCount = (appState.adsPromo?.codes || []).length;
+  const eventsCount = (appState.gameEvents || []).length;
+
+  const tBadge = document.getElementById('navTikTokBadge');
+  if (tBadge) tBadge.textContent = `${accountsCount} Akun`;
+
+  const cBadge = document.getElementById('navContractsBadge');
+  if (cBadge) cBadge.textContent = `${activeContractsCount} Aktif`;
+
+  const aBadge = document.getElementById('navAdsPromoBadge');
+  if (aBadge) aBadge.textContent = `${promoCodesCount} Kode`;
+
+  const eBadge = document.getElementById('navGameEventsBadge');
+  if (eBadge) eBadge.textContent = `${eventsCount} Event`;
+
+  // Revenue Footer
+  const totalRevenue = (appState.contracts || []).reduce((sum, c) => sum + (c.status !== 'draft' ? (c.value || 0) : 0), 0);
+  const goal = appState.revenueGoal || (totalRevenue > 0 ? totalRevenue * 1.5 : 0);
+
+  const curAmt = document.getElementById('targetCurrentAmount');
+  const pctEl = document.getElementById('targetPercentage');
+  const barEl = document.getElementById('targetProgressBar');
+  const goalEl = document.getElementById('targetGoalLabel');
+  const remEl = document.getElementById('targetRemainingLabel');
+
+  if (curAmt) curAmt.textContent = totalRevenue > 0 ? `Rp ${totalRevenue.toLocaleString('id-ID')}` : 'Rp 0';
+  if (pctEl) pctEl.textContent = goal > 0 ? `${Math.round((totalRevenue / goal) * 100)}%` : '0%';
+  if (barEl) barEl.style.width = goal > 0 ? `${Math.min(100, Math.round((totalRevenue / goal) * 100))}%` : '0%';
+  if (goalEl) goalEl.textContent = goal > 0 ? `Goal: Rp ${(goal / 1000000).toLocaleString('id-ID')} Juta` : 'Goal: Rp 0';
+  if (remEl) {
+    if (totalRevenue === 0) {
+      remEl.textContent = 'Belum ada kontrak aktif';
+    } else {
+      const remaining = Math.max(0, goal - totalRevenue);
+      remEl.textContent = `Sisa Rp ${(remaining / 1000000).toLocaleString('id-ID')} Juta`;
+    }
+  }
+}
+
+/**
  * Render view based on currentTab
  */
 function renderCurrentView() {
+  updateSidebarMetrics();
+
   if (currentTab === 'tiktok') {
     renderTikTokView(
       appState,
@@ -353,6 +408,72 @@ function initApp() {
   // Brand logo click goes to TikTok dashboard
   document.querySelector('.brand-badge')?.addEventListener('click', () => {
     switchTab('tiktok');
+  });
+
+  // Profile button opens Studio Settings & Data Manager
+  document.querySelector('.user-profile-btn')?.addEventListener('click', () => {
+    const modal = document.getElementById('globalModal');
+    const modalTitle = document.getElementById('globalModalTitle');
+    const modalBody = document.getElementById('globalModalBody');
+    const modalFooter = document.getElementById('globalModalFooter');
+
+    const accountsCount = Object.keys(appState.accounts || {}).length;
+    const contractsCount = (appState.contracts || []).length;
+
+    modalTitle.textContent = 'Pengaturan Studio & Manajemen Data';
+    modalBody.innerHTML = `
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="glass-card" style="padding: 14px 16px;">
+          <div style="font-weight: 700; color: #fff; margin-bottom: 4px;">Status Data Studio Saat Ini:</div>
+          <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+            • <b>${accountsCount}</b> Akun TikTok terhubung<br/>
+            • <b>${contractsCount}</b> Kontrak brand terdaftar<br/>
+            • <b>${(appState.videos || []).length}</b> Video terkatalog<br/>
+            • <b>${(appState.gameEvents || []).length}</b> Event game
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <button class="btn btn-outline-danger" id="btnClearAllStudioData" style="justify-content: flex-start; padding: 12px 16px; text-align: left; border-color: rgba(239, 68, 68, 0.4); color: #ef4444;">
+            <div>
+              <div style="font-weight: 700;">🗑️ Kosongkan Semua Data (Clean Slate 100%)</div>
+              <div style="font-size: 11.5px; opacity: 0.8; margin-top: 2px;">Hapus seluruh data dummy/contoh agar bersih untuk akun asli Anda.</div>
+            </div>
+          </button>
+
+          <button class="btn btn-secondary" id="btnLoadDemoStudioData" style="justify-content: flex-start; padding: 12px 16px; text-align: left;">
+            <div>
+              <div style="font-weight: 700;">📂 Muat Data Contoh (Demo)</div>
+              <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">Muat contoh akun gaming & lifestyle, kontrak ASUS ROG, dan turnamen untuk pengujian.</div>
+            </div>
+          </button>
+        </div>
+      </div>
+    `;
+
+    modalFooter.innerHTML = `
+      <button class="btn btn-secondary" onclick="document.getElementById('globalModal').classList.remove('open')">Tutup</button>
+    `;
+
+    document.getElementById('btnClearAllStudioData')?.addEventListener('click', () => {
+      if (confirm('Kosongkan semua data studio agar 100% bersih?')) {
+        clearEntireStudioData(appState);
+        modal.classList.remove('open');
+        showToast('Semua data studio berhasil dibersihkan!');
+        renderAccountSwitcher();
+        renderCurrentView();
+      }
+    });
+
+    document.getElementById('btnLoadDemoStudioData')?.addEventListener('click', () => {
+      loadDemoData(appState);
+      modal.classList.remove('open');
+      showToast('Data contoh demo berhasil dimuat!');
+      renderAccountSwitcher();
+      renderCurrentView();
+    });
+
+    modal.classList.add('open');
   });
 
   // Render dynamic account switcher in topbar

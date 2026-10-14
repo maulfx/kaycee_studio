@@ -83,10 +83,10 @@ export function renderGameEventsView(data, onAskAiEvent, onShowToast) {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
           </div>
         </div>
-        <div class="stat-value">Rp ${(totalFees / 1000000).toLocaleString('id-ID')} Juta</div>
+        <div class="stat-value">${totalFees > 0 ? 'Rp ' + (totalFees / 1000000).toLocaleString('id-ID') + ' Juta' : 'Rp 0'}</div>
         <div class="stat-trend trend-up">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
-          4 Event Publisher Terverifikasi
+          ${events.length} Event Terdaftar
         </div>
       </div>
 
@@ -99,7 +99,7 @@ export function renderGameEventsView(data, onAskAiEvent, onShowToast) {
         </div>
         <div class="stat-value">${events.length} Event</div>
         <div class="stat-trend" style="color: var(--accent-cyan);">
-          Oktober - November 2026
+          ${events.length > 0 ? 'Jadwal Terdaftar' : 'Belum ada jadwal'}
         </div>
       </div>
 
@@ -112,7 +112,7 @@ export function renderGameEventsView(data, onAskAiEvent, onShowToast) {
         </div>
         <div class="stat-value">TikTok Live</div>
         <div class="stat-trend" style="color: var(--accent-pink);">
-          Broadcast ke ${Object.values(data.accounts || {})[0]?.handle || 'TikTok Live'}
+          ${events.length > 0 ? `Target: ${events[0].targetAccount || 'TikTok Live'}` : 'Siap Broadcast'}
         </div>
       </div>
 
@@ -123,20 +123,37 @@ export function renderGameEventsView(data, onAskAiEvent, onShowToast) {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
           </div>
         </div>
-        <div class="stat-value">100% Siap</div>
+        <div class="stat-value">Siap Digunakan</div>
         <div class="stat-trend trend-up">
-          Dual PC Stream + Elgato Cam Link
+          ${events.length > 0 ? 'OBS Stream Setup' : 'Standby'}
         </div>
       </div>
     </div>
 
     <!-- Events List Grid -->
     <div class="events-grid">
-      ${events.map(event => renderEventCard(event)).join('')}
+      ${events.length === 0 ? `
+        <div class="account-hero-card" style="grid-column: 1 / -1; text-align: center; padding: 56px 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;">
+          <div style="font-size: 32px;">🎮</div>
+          <h3 style="font-size: 20px; font-weight: 700; color: #fff;">Belum Ada Jadwal Event Game</h3>
+          <p style="color: var(--text-muted); font-size: 14px; max-width: 500px; margin: 0 auto; line-height: 1.5;">
+            Catat jadwal turnamen, invitation stream, atau watch party game yang akan Anda ikuti beserta fee kreator dan checklist persiapannya.
+          </p>
+          <button class="btn btn-primary" id="btnEmptyCreateEvent" style="padding: 10px 22px; font-size: 14px; margin-top: 6px;">
+            + Tambah Event Game Pertama
+          </button>
+        </div>
+      ` : events.map(event => renderEventCard(event)).join('')}
     </div>
   `;
 
-  startCountdown(nextEvent ? nextEvent.date : '2026-10-18T15:00:00');
+  document.getElementById('btnEmptyCreateEvent')?.addEventListener('click', () => {
+    document.getElementById('btnCreateGameEvent')?.click();
+  });
+
+  if (nextEvent && nextEvent.date) {
+    startCountdown(nextEvent.date);
+  }
   attachGameEventListeners(data, onAskAiEvent, onShowToast);
 }
 
