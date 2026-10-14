@@ -13,61 +13,7 @@ export function renderSourceView(data, onShowToast, onStateChanged) {
   const container = document.getElementById('sourceView');
   if (!container) return;
 
-  if (!data.sourceAssets) {
-    data.sourceAssets = [
-      {
-        id: 'src-01',
-        name: 'Genshin Impact 5.0 Natlan 4K 60FPS Raw Footage Pack',
-        category: 'Footage',
-        format: 'MP4 (ProRes)',
-        size: '4.2 GB',
-        tags: ['Genshin', 'Natlan', '4K60'],
-        downloads: 18,
-        addedDate: '24 thg 9, 2026'
-      },
-      {
-        id: 'src-02',
-        name: 'CRUSADER Phonk Ultra Slowed Bass Boosted Audio Track',
-        category: 'Audio',
-        format: 'WAV (24-bit 48kHz)',
-        size: '38 MB',
-        tags: ['Phonk', 'Trending', 'BGM'],
-        downloads: 42,
-        addedDate: '23 thg 9, 2026'
-      },
-      {
-        id: 'src-03',
-        name: 'Cinematic Glitch & RGB Split Transitions Pack (AE Preset)',
-        category: 'VFX Presets',
-        format: 'AEP / FFX',
-        size: '124 MB',
-        tags: ['After Effects', 'Glitch', 'VFX'],
-        downloads: 29,
-        addedDate: '22 thg 9, 2026'
-      },
-      {
-        id: 'src-04',
-        name: 'Valorant VCT Kill SFX Pack with Bass Drop Impact',
-        category: 'SFX',
-        format: 'WAV / MP3',
-        size: '15 MB',
-        tags: ['Valorant', 'SFX', 'Impact'],
-        downloads: 65,
-        addedDate: '21 thg 9, 2026'
-      },
-      {
-        id: 'src-05',
-        name: 'Moody Cyberpunk Violet LUT Color Grading Profile',
-        category: 'LUTs',
-        format: 'CUBE',
-        size: '8 MB',
-        tags: ['LUT', 'ColorGrade', 'Cyberpunk'],
-        downloads: 33,
-        addedDate: '20 thg 9, 2026'
-      }
-    ];
-    saveStudioData(data);
-  }
+  data.sourceAssets = data.sourceAssets || [];
 
   let list = data.sourceAssets;
   if (sourceSearchQuery.trim()) {
@@ -87,18 +33,18 @@ export function renderSourceView(data, onShowToast, onStateChanged) {
     <div class="vf-posted-header">
       <div class="vf-header-left">
         <h2 class="vf-title">Source Library</h2>
-        <p class="vf-sub">Kho tài nguyên video thô, footage, âm thanh BGM & preset kỹ xảo VFX</p>
+        <p class="vf-sub">Pustaka footage video, audio BGM, dan preset efek visual VFX</p>
       </div>
 
       <div class="vf-header-right">
         <div class="vf-search-box">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="vf-search-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="sourceSearchInput" class="vf-search-input" placeholder="Tìm tài nguyên, audio, VFX..." value="${sourceSearchQuery}" />
+          <input type="text" id="sourceSearchInput" class="vf-search-input" placeholder="Cari nama aset, audio, atau tag..." value="${sourceSearchQuery}" />
         </div>
 
         <button class="btn vf-btn-primary" id="btnImportSource">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-          <span>+ Nhập tài nguyên mới</span>
+          <span>+ Impor Aset Baru</span>
         </button>
       </div>
     </div>
@@ -106,13 +52,13 @@ export function renderSourceView(data, onShowToast, onStateChanged) {
     <!-- Subtitle Bar -->
     <div class="vf-sub-bar">
       <span class="vf-dot-live"></span>
-      <span>Được lưu trữ trực tiếp trên ổ đĩa máy tính (Local Storage Fast Access)</span>
-      <span style="margin-left: auto; color: var(--text-muted); font-size: 11.5px;">Tổng cộng: <b>${list.length}</b> tài nguyên</span>
+      <span>Tersimpan di PC lokal untuk akses editing cepat</span>
+      <span style="margin-left: auto; color: var(--text-muted); font-size: 11.5px;">Total: <b>${list.length}</b> aset</span>
     </div>
 
     <!-- Category Filters -->
     <div class="vf-filter-row">
-      <button class="vf-filter-pill ${sourceActiveFilter === 'all' ? 'active' : ''}" data-cat-filter="all">Tất cả (${data.sourceAssets.length})</button>
+      <button class="vf-filter-pill ${sourceActiveFilter === 'all' ? 'active' : ''}" data-cat-filter="all">Semua (${data.sourceAssets.length})</button>
       <button class="vf-filter-pill ${sourceActiveFilter === 'Footage' ? 'active' : ''}" data-cat-filter="Footage">🎬 Footage</button>
       <button class="vf-filter-pill ${sourceActiveFilter === 'Audio' ? 'active' : ''}" data-cat-filter="Audio">🎵 Audio / BGM</button>
       <button class="vf-filter-pill ${sourceActiveFilter === 'SFX' ? 'active' : ''}" data-cat-filter="SFX">🔊 SFX</button>
@@ -125,19 +71,24 @@ export function renderSourceView(data, onShowToast, onStateChanged) {
       <table class="vf-table">
         <thead>
           <tr>
-            <th style="width: 48%;">TÀI NGUYÊN / ASSET NAME</th>
-            <th style="width: 12%;">LOẠI</th>
-            <th style="width: 12%;">ĐỊNH DẠNG</th>
-            <th style="width: 10%;">DUNG LƯỢNG</th>
-            <th style="width: 10%;">NGÀY THÊM</th>
-            <th style="width: 8%; text-align: right;">THAO TÁC</th>
+            <th style="width: 48%;">NAMA ASET / FILE</th>
+            <th style="width: 12%;">KATEGORI</th>
+            <th style="width: 12%;">FORMAT</th>
+            <th style="width: 10%;">UKURAN</th>
+            <th style="width: 10%;">TANGGAL</th>
+            <th style="width: 8%; text-align: right;">AKSI</th>
           </tr>
         </thead>
         <tbody>
           ${list.length === 0 ? `
             <tr>
-              <td colspan="6" style="text-align: center; padding: 40px; color: var(--text-muted);">
-                Không tìm thấy tài nguyên nào.
+              <td colspan="6" style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
+                <div style="font-size: 32px; margin-bottom: 8px;">📁</div>
+                <div style="font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 4px;">Belum Ada File Sumber & Footage</div>
+                <div style="font-size: 12.5px; color: var(--text-muted); max-width: 440px; margin: 0 auto 16px; line-height: 1.5;">
+                  Simpan aset video thô, sound effects (SFX), background audio, dan preset After Effects di sini.
+                </div>
+                <button class="btn vf-btn-primary" id="btnEmptyAddSource">+ Tambah Aset Sumber</button>
               </td>
             </tr>
           ` : list.map(item => `
@@ -185,6 +136,10 @@ export function renderSourceView(data, onShowToast, onStateChanged) {
       sourceActiveFilter = btn.dataset.catFilter;
       renderSourceView(data, onShowToast, onStateChanged);
     });
+  });
+
+  container.querySelector('#btnEmptyAddSource')?.addEventListener('click', () => {
+    container.querySelector('#btnImportSource')?.click();
   });
 
   // Add source asset

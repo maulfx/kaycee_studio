@@ -87,16 +87,16 @@ export function switchTab(tabId) {
   const pageTitle = document.getElementById('topbarPageTitle');
   const pageSub = document.getElementById('topbarPageSub');
   const tabTitles = {
-    posted: { title: 'Posted', sub: 'Thư viện bài đã đăng của bạn' },
-    dashboard: { title: 'Dashboard', sub: 'Tổng quan hiệu suất & tiến độ studio' },
-    contracts: { title: 'Contract', sub: 'Quản lý hợp đồng tài trợ & Brand Deals' },
-    adsPromo: { title: 'Ads/Promo', sub: 'Chiến dịch quảng cáo & mã khuyến mãi' },
-    gameEvents: { title: 'Event', sub: 'Lịch sự kiện & giải đấu gaming' },
-    videoVault: { title: 'Video', sub: 'Kho video & tiến độ sản xuất nội dung' },
-    source: { title: 'Source', sub: 'Kho tài nguyên footage thô, VFX & âm thanh' },
-    accountPlatform: { title: 'Account Platform', sub: 'Quản lý các tài khoản TikTok kết nối' },
-    member: { title: 'Member', sub: 'Đội ngũ sáng tạo & biên tập viên' },
-    aiAgent: { title: 'Hermes AI Agent', sub: 'Trợ lý AI phân tích kịch bản & tối ưu hóa' }
+    posted: { title: 'Posted', sub: 'Pustaka video publik yang tersimpan di PC' },
+    dashboard: { title: 'Dashboard', sub: 'Ringkasan performa & status studio' },
+    contracts: { title: 'Contract', sub: 'Daftar kontrak sponsor & brand deals' },
+    adsPromo: { title: 'Ads/Promo', sub: 'Daftar kampanye iklan & kode promo voucher' },
+    gameEvents: { title: 'Event', sub: 'Jadwal turnamen & event eSports' },
+    videoVault: { title: 'Video', sub: 'Draf proyek video & antrian editing' },
+    source: { title: 'Source', sub: 'Pustaka footage video, audio & preset VFX' },
+    accountPlatform: { title: 'Account Platform', sub: 'Kelola akun TikTok yang terhubung' },
+    member: { title: 'Member', sub: 'Daftar anggota tim & editor' },
+    aiAgent: { title: 'Hermes AI Agent', sub: 'Asisten AI strategi konten & analitik' }
   };
 
   if (tabTitles[tabId]) {

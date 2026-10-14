@@ -4,7 +4,7 @@
  * Real data must be connected or inputted by the user.
  */
 
-const STORAGE_KEY = 'kaycee_studio_clean_v3';
+const STORAGE_KEY = 'kaycee_studio_clean_v5';
 
 /**
  * 100% Clean initial state - Zero ghost/dummy data
@@ -19,6 +19,20 @@ export const INITIAL_DATA = {
     pipeline: []
   },
   gameEvents: [],
+  videoVault: [],
+  sourceAssets: [],
+  teamMembers: [
+    {
+      id: 'mem-01',
+      name: 'Kaycee',
+      email: 'owner@kayceestudio.com',
+      role: 'Studio Owner & Creator',
+      avatar: '/assets/avatar.jpg',
+      status: 'Online',
+      projectsCount: 0,
+      isOwner: true
+    }
+  ],
   revenueGoal: 0,
   hermesConfig: {
     endpoint: '/api/hermes',
@@ -30,7 +44,7 @@ export const INITIAL_DATA = {
     {
       sender: 'bot',
       timestamp: 'Baru saja',
-      text: 'Halo Kaycee. Hermes AI siap membantu. Saat ini belum ada akun TikTok atau data kontrak yang terhubung. Anda bisa mulai dengan menghubungkan akun TikTok asli Anda atau mencatat kontrak brand pertama.'
+      text: 'Halo Kaycee. Studio Anda siap digunakan. Hubungkan akun TikTok atau catat data kontrak dan video Anda.'
     }
   ]
 };
@@ -210,6 +224,8 @@ export function getStudioData() {
     // Clear old versions with hardcoded ghost data
     localStorage.removeItem('kaycee_studio_data_v1');
     localStorage.removeItem('kaycee_studio_data_v2');
+    localStorage.removeItem('kaycee_studio_clean_v3');
+    localStorage.removeItem('kaycee_studio_clean_v4');
 
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) {

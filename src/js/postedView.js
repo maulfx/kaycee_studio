@@ -35,91 +35,6 @@ export function renderPostedView(data, onShowToast, onStateChanged) {
   const accounts = data.accounts || {};
   const accountsList = Object.values(accounts);
 
-  // If no videos yet, provide default initial items matching reference
-  if (!data.videos || data.videos.length === 0) {
-    data.videos = [
-      {
-        id: '7688804918601272598',
-        tiktokId: '7688804918601272598',
-        fileName: 'CRUSADER (Ultra Slowed)_2_prob3.mp4',
-        title: '#Naberius || HER MODEL SO GOOD HELLO !!??? || #GenshinImpact #genshinimpactedit #hoyoverse #kaycee',
-        creator: 'Kaycee',
-        accountId: accountsList[0]?.id || 'acc_1',
-        account: accountsList[0]?.handle || '@kaycee_vfx',
-        views: 72500,
-        likes: 12400,
-        postDate: '01:50 24 thg 9, 2026',
-        cover: '/assets/avatar.jpg'
-      },
-      {
-        id: '7688717957114891542',
-        tiktokId: '7688717957114891542',
-        fileName: 'Crusader (Ultra Slowed) Prob3.mp4',
-        title: '#Ronova || Her Aura || #GenshinImpact #genshinimpactedit #hoyoverse #kaycee',
-        creator: 'Kaycee',
-        accountId: accountsList[0]?.id || 'acc_1',
-        account: accountsList[0]?.handle || '@kaycee_vfx',
-        views: 123100,
-        likes: 21800,
-        postDate: '20:12 23 thg 9, 2026',
-        cover: '/assets/avatar.jpg'
-      },
-      {
-        id: '7688674078835821827',
-        tiktokId: '7688674078835821827',
-        fileName: 'CRUSADER (Ultra Slowed)_1_prob3.mp4',
-        title: '#Tsaritsa || I want to see how she use her weapon || #GenshinImpact #genshinimpactedit #hoyoverse #kaycee',
-        creator: 'Kaycee',
-        accountId: accountsList[0]?.id || 'acc_1',
-        account: accountsList[0]?.handle || '@kaycee_vfx',
-        views: 104500,
-        likes: 18900,
-        postDate: '17:22 23 thg 9, 2026',
-        cover: '/assets/setup_thumb.jpg'
-      },
-      {
-        id: '7688056243503516950',
-        tiktokId: '7688056243503516950',
-        fileName: 'Raya_1_prob3.mp4',
-        title: '#Sylus || New character #loveanddeepspace #loveanddeepspaceedit #lads #kaycee',
-        creator: 'Kaycee',
-        accountId: accountsList[0]?.id || 'acc_1',
-        account: accountsList[0]?.handle || '@kaycee_vfx',
-        views: 864,
-        likes: 142,
-        postDate: '01:24 22 thg 9, 2026',
-        cover: '/assets/avatar.jpg'
-      },
-      {
-        id: '7687995838701915484',
-        tiktokId: '7687995838701915484',
-        fileName: 'Hoyofair_Animation_vfx.mp4',
-        title: '#Hoyofair || I LOVE THIS ANIMATIONNN #GenshinImpact #genshinimpactedit #hoyoverse #kaycee',
-        creator: 'Kaycee',
-        accountId: accountsList[0]?.id || 'acc_1',
-        account: accountsList[0]?.handle || '@kaycee_vfx',
-        views: 68500,
-        likes: 9200,
-        postDate: '21:30 21 thg 9, 2026',
-        cover: '/assets/setup_thumb.jpg'
-      },
-      {
-        id: '7687633413204987158',
-        tiktokId: '7687633413204987158',
-        fileName: 'Poster Boy (Instrumental Slowed) Prob3.mp4',
-        title: '#EllenJoe & #AstraYao || New collab ZZZ x HSR #zenlesszonezero #honkaistarrail #hoyoverse',
-        creator: 'Kaycee',
-        accountId: accountsList[1]?.id || accountsList[0]?.id || 'acc_2',
-        account: accountsList[1]?.handle || '@kaycee.gaming',
-        views: 223000,
-        likes: 41500,
-        postDate: '22:04 20 thg 9, 2026',
-        cover: '/assets/avatar.jpg'
-      }
-    ];
-    saveStudioData(data);
-  }
-
   let videos = data.videos || [];
 
   // Filter by search
@@ -144,18 +59,18 @@ export function renderPostedView(data, onShowToast, onStateChanged) {
     <div class="vf-posted-header">
       <div class="vf-header-left">
         <h2 class="vf-title">Posted</h2>
-        <p class="vf-sub">Thư viện bài đã đăng của bạn / Pustaka video publik Anda</p>
+        <p class="vf-sub">Pustaka video publik Anda yang tersimpan di PC lokal</p>
       </div>
 
       <div class="vf-header-right">
         <div class="vf-search-box">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="vf-search-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="postedSearchInput" class="vf-search-input" placeholder="Tìm kiếm / Cari video..." value="${postedSearchQuery}" />
+          <input type="text" id="postedSearchInput" class="vf-search-input" placeholder="Cari judul, tag, atau file..." value="${postedSearchQuery}" />
         </div>
 
         <button class="btn vf-btn-primary" id="btnAddPostedBtn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-          <span>+ Thêm bài</span>
+          <span>+ Tambah Video</span>
         </button>
       </div>
     </div>
@@ -163,8 +78,8 @@ export function renderPostedView(data, onShowToast, onStateChanged) {
     <!-- Subtitle Bar -->
     <div class="vf-sub-bar">
       <span class="vf-dot-live"></span>
-      <span>Các bài public đã lưu trên máy này (Dữ liệu cục bộ / Local PC)</span>
-      <span style="margin-left: auto; color: var(--text-muted); font-size: 11.5px;">Tổng cộng: <b>${videos.length}</b> bài đăng</span>
+      <span>Daftar video publik yang tersimpan di PC ini (Penyimpanan Lokal)</span>
+      <span style="margin-left: auto; color: var(--text-muted); font-size: 11.5px;">Total: <b>${videos.length}</b> video</span>
     </div>
 
     <!-- Filter Pills by Account -->
@@ -185,22 +100,24 @@ export function renderPostedView(data, onShowToast, onStateChanged) {
       <table class="vf-table">
         <thead>
           <tr>
-            <th style="width: 48%;">BÀI ĐĂNG</th>
-            <th style="width: 10%;">CREATOR</th>
-            <th style="width: 12%;">ACCOUNT</th>
+            <th style="width: 48%;">POSTINGAN VIDEO</th>
+            <th style="width: 10%;">KREATOR</th>
+            <th style="width: 12%;">AKUN</th>
             <th style="width: 8%;">VIEWS</th>
-            <th style="width: 12%;">NGÀY ĐĂNG</th>
-            <th style="width: 10%; text-align: right;">THAO TÁC</th>
+            <th style="width: 12%;">TANGGAL PUBLISH</th>
+            <th style="width: 10%; text-align: right;">AKSI</th>
           </tr>
         </thead>
         <tbody>
           ${videos.length === 0 ? `
             <tr>
-              <td colspan="6" style="text-align: center; padding: 48px 16px; color: var(--text-muted);">
-                Chưa có bài đăng nào phù hợp với bộ lọc tìm kiếm.
-                <div style="margin-top: 10px;">
-                  <button class="btn vf-btn-primary btn-sm" id="btnEmptyAddPost">+ Thêm bài đăng mới</button>
+              <td colspan="6" style="text-align: center; padding: 60px 16px; color: var(--text-muted);">
+                <div style="font-size: 32px; margin-bottom: 8px;">🎬</div>
+                <div style="font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 4px;">Belum Ada Video Publik yang Dicatat</div>
+                <div style="font-size: 12.5px; color: var(--text-muted); max-width: 440px; margin: 0 auto 16px; line-height: 1.5;">
+                  Daftar video yang sudah Anda upload akan tersimpan dan tampil di tabel ini. Klik tombol di bawah untuk mencatat video pertama Anda.
                 </div>
+                <button class="btn vf-btn-primary" id="btnEmptyAddPost">+ Catat Video Pertama</button>
               </td>
             </tr>
           ` : videos.map(video => renderPostedRow(video, accounts)).join('')}
@@ -339,12 +256,12 @@ function renderPostedRow(video, accounts) {
         <span class="vf-date-text">${video.postDate || '20:12 24 thg 9, 2026'}</span>
       </td>
 
-      <!-- Column 6: THAO TÁC (3 Buttons) -->
+      <!-- Column 6: AKSI (3 Buttons) -->
       <td>
         <div class="vf-actions-group">
-          <button class="btn-vf-action btn-vf-detail" data-id="${video.id}" title="Chi tiết bài đăng">Chi tiết</button>
-          <button class="btn-vf-action btn-vf-sync" data-id="${video.id}" title="Quét lại / Sync dữ liệu">Quét lại</button>
-          <button class="btn-vf-action btn-vf-delete" data-id="${video.id}" title="Xóa bài đăng">Xóa</button>
+          <button class="btn-vf-action btn-vf-detail" data-id="${video.id}" title="Detail Video">Detail</button>
+          <button class="btn-vf-action btn-vf-sync" data-id="${video.id}" title="Sync / Perbarui Views">Sync</button>
+          <button class="btn-vf-action btn-vf-delete" data-id="${video.id}" title="Hapus Video">Hapus</button>
         </div>
       </td>
     </tr>
@@ -363,12 +280,12 @@ export function showAddPostedModal(data, onDone, onShowToast) {
   const accounts = data.accounts || {};
   const accountsList = Object.values(accounts);
 
-  modalTitle.textContent = '+ Thêm bài đăng TikTok';
+  modalTitle.textContent = '+ Catat Video Baru';
   modalBody.innerHTML = `
     <form id="addPostedForm">
       <div class="form-group">
-        <label class="form-label">Tiêu đề bài đăng / Caption TikTok</label>
-        <textarea class="form-control" id="postTitle" rows="3" placeholder="#Highlight || Best play Fanny Mythic Glory #mlbb #gaming #kaycee" required></textarea>
+        <label class="form-label">Judul Video / Caption TikTok</label>
+        <textarea class="form-control" id="postTitle" rows="3" placeholder="#Highlight || Best gameplay MLBB / Valorant #gaming #kaycee" required></textarea>
       </div>
 
       <div class="form-row">
@@ -377,34 +294,34 @@ export function showAddPostedModal(data, onDone, onShowToast) {
           <input type="text" class="form-control" id="postTikTokId" placeholder="7688504918601272598" value="${Date.now()}" />
         </div>
         <div class="form-group">
-          <label class="form-label">Tên File Video / Audio</label>
-          <input type="text" class="form-control" id="postFileName" placeholder="CRUSADER_Prob3.mp4" value="Kaycee_Gameplay_Final.mp4" />
+          <label class="form-label">Nama File Video / Export</label>
+          <input type="text" class="form-control" id="postFileName" placeholder="video_clutch_final.mp4" value="Kaycee_Gameplay_Final.mp4" />
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">Tài khoản TikTok (Account)</label>
+          <label class="form-label">Akun TikTok Tujuan</label>
           <select class="form-control" id="postAccountId">
             ${accountsList.length ? accountsList.map(a => `<option value="${a.id}">${a.handle} (${a.displayName})</option>`).join('') : `
-              <option value="acc_1">@kaycee.gaming (Kaycee MLBB)</option>
-              <option value="acc_2">@kaycee.lifestyle (Kaycee Setup)</option>
+              <option value="acc_1">@kaycee.gaming</option>
+              <option value="acc_2">@kaycee.lifestyle</option>
             `}
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">Người đăng (Creator)</label>
+          <label class="form-label">Nama Kreator / Editor</label>
           <input type="text" class="form-control" id="postCreator" value="Kaycee" />
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">Lượt xem ban đầu (Views)</label>
-          <input type="number" class="form-control" id="postViews" placeholder="50000" value="75000" />
+          <label class="form-label">Jumlah Views Awal</label>
+          <input type="number" class="form-control" id="postViews" placeholder="0" value="0" />
         </div>
         <div class="form-group">
-          <label class="form-label">Ảnh bìa (Thumbnail URL)</label>
+          <label class="form-label">Thumbnail Cover</label>
           <input type="text" class="form-control" id="postCover" value="/assets/avatar.jpg" />
         </div>
       </div>
@@ -412,20 +329,20 @@ export function showAddPostedModal(data, onDone, onShowToast) {
   `;
 
   modalFooter.innerHTML = `
-    <button class="btn btn-secondary" onclick="document.getElementById('globalModal').classList.remove('open')">Hủy</button>
-    <button class="btn vf-btn-primary" id="btnSubmitNewPosted">Lưu bài đăng</button>
+    <button class="btn btn-secondary" onclick="document.getElementById('globalModal').classList.remove('open')">Batal</button>
+    <button class="btn vf-btn-primary" id="btnSubmitNewPosted">Simpan Video</button>
   `;
 
   document.getElementById('btnSubmitNewPosted')?.addEventListener('click', () => {
     const title = document.getElementById('postTitle')?.value.trim();
     if (!title) {
-      alert('Vui lòng nhập tiêu đề bài đăng.');
+      alert('Silakan masukkan judul atau caption video.');
       return;
     }
 
     const accountId = document.getElementById('postAccountId')?.value;
     const targetAcc = accounts[accountId] || accountsList[0] || { handle: '@kaycee.gaming' };
-    const views = parseInt(document.getElementById('postViews')?.value) || 1000;
+    const views = parseInt(document.getElementById('postViews')?.value) || 0;
 
     const newPost = {
       id: document.getElementById('postTikTokId')?.value.trim() || String(Date.now()),
@@ -439,7 +356,7 @@ export function showAddPostedModal(data, onDone, onShowToast) {
       likes: Math.round(views * 0.14),
       comments: Math.round(views * 0.006),
       shares: Math.round(views * 0.012),
-      postDate: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' ' + new Date().toLocaleDateString('vi-VN'),
+      postDate: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' ' + new Date().toLocaleDateString('id-ID'),
       cover: document.getElementById('postCover')?.value.trim() || '/assets/avatar.jpg'
     };
 
@@ -450,7 +367,7 @@ export function showAddPostedModal(data, onDone, onShowToast) {
     playSuccessSound();
     confetti({ particleCount: 35, spread: 60, origin: { y: 0.6 } });
     modal.classList.remove('open');
-    if (onShowToast) onShowToast('Thêm bài đăng mới thành công!');
+    if (onShowToast) onShowToast('Video baru berhasil dicatat!');
     if (onDone) onDone();
   });
 

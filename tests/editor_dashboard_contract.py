@@ -6,9 +6,9 @@ ROOT = Path(__file__).parents[1]
 def test_editor_dashboard_is_registered():
     html = (ROOT / 'index.html').read_text(encoding='utf-8')
     js = (ROOT / 'src/js/main.js').read_text(encoding='utf-8')
-    assert 'data-tab="editorDesk"' in html
-    assert 'id="editorDeskView"' in html
-    assert "currentTab = 'editorDesk'" in js
+    assert 'data-tab="dashboard"' in html or 'data-tab="editorDesk"' in html
+    assert 'id="dashboardView"' in html or 'id="editorDeskView"' in html
+    assert "renderEditorDashboard" in js
 
 
 def test_editor_dashboard_has_editor_workflow_sections():

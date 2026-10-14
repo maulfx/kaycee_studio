@@ -13,59 +13,7 @@ export function renderVideoVaultView(data, onShowToast, onStateChanged) {
   const container = document.getElementById('videoVaultView');
   if (!container) return;
 
-  if (!data.videoVault) {
-    data.videoVault = [
-      {
-        id: 'vv-01',
-        title: 'Valorant VCT Masters Clutch - 4K 60FPS Edit',
-        fileName: 'Valorant_Masters_Clutch_v3.mp4',
-        duration: '0:38',
-        resolution: '1080x1920 (9:16)',
-        status: 'Ready to Post',
-        assignedTo: 'VaSTuan',
-        targetAccount: '@kaycee.gaming',
-        progress: 100,
-        updatedAt: 'Hôm nay, 18:30'
-      },
-      {
-        id: 'vv-02',
-        title: 'ASUS ROG Phone 9 Pro Gaming Review Showcase',
-        fileName: 'ASUS_ROG9_Deliverable_Draft2.mp4',
-        duration: '0:58',
-        resolution: '1080x1920 (9:16)',
-        status: 'Client Review',
-        assignedTo: 'VaSTuan',
-        targetAccount: '@kaycee.lifestyle',
-        progress: 85,
-        updatedAt: 'Hôm nay, 15:10'
-      },
-      {
-        id: 'vv-03',
-        title: 'Genshin Impact Nod-Krai Speed Edit Phonk Beat',
-        fileName: 'Genshin_NodKrai_Phonk_v1.mp4',
-        duration: '0:24',
-        resolution: '1080x1920 (9:16)',
-        status: 'Editing',
-        assignedTo: 'Moavy',
-        targetAccount: '@vastuan_vfx',
-        progress: 45,
-        updatedAt: 'Hôm qua, 22:40'
-      },
-      {
-        id: 'vv-04',
-        title: 'Wuthering Waves Shorekeeper Cinematic Montage',
-        fileName: 'WuWa_Shorekeeper_Cinematic.mp4',
-        duration: '0:42',
-        resolution: '1080x1920 (9:16)',
-        status: 'Rendering',
-        assignedTo: 'VaSTuan',
-        targetAccount: '@vastuan_vfx',
-        progress: 70,
-        updatedAt: 'Hôm nay, 19:15'
-      }
-    ];
-    saveStudioData(data);
-  }
+  data.videoVault = data.videoVault || [];
 
   let list = data.videoVault;
   if (videoSearchQuery.trim()) {
@@ -81,18 +29,18 @@ export function renderVideoVaultView(data, onShowToast, onStateChanged) {
     <div class="vf-posted-header">
       <div class="vf-header-left">
         <h2 class="vf-title">Video Vault</h2>
-        <p class="vf-sub">Kho video dự án, tiến độ render & danh sách chờ đăng TikTok</p>
+        <p class="vf-sub">Pustaka draft video, pipeline editing, dan antrian render</p>
       </div>
 
       <div class="vf-header-right">
         <div class="vf-search-box">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="vf-search-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="videoVaultSearchInput" class="vf-search-input" placeholder="Tìm kiếm video dự án..." value="${videoSearchQuery}" />
+          <input type="text" id="videoVaultSearchInput" class="vf-search-input" placeholder="Cari draft video..." value="${videoSearchQuery}" />
         </div>
 
         <button class="btn vf-btn-primary" id="btnCreateNewVaultVideo">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-          <span>+ Tạo video mới</span>
+          <span>+ Buat Draf Baru</span>
         </button>
       </div>
     </div>
@@ -100,17 +48,17 @@ export function renderVideoVaultView(data, onShowToast, onStateChanged) {
     <!-- Subtitle Bar -->
     <div class="vf-sub-bar">
       <span class="vf-dot-live"></span>
-      <span>Hàng đợi dựng video & xuất file cục bộ (Premiere Pro / After Effects sync)</span>
-      <span style="margin-left: auto; color: var(--text-muted); font-size: 11.5px;">Tổng cộng: <b>${list.length}</b> dự án</span>
+      <span>Antrian produksi video lokal (Premiere Pro / After Effects)</span>
+      <span style="margin-left: auto; color: var(--text-muted); font-size: 11.5px;">Total: <b>${list.length}</b> proyek</span>
     </div>
 
     <!-- Filters -->
     <div class="vf-filter-row">
-      <button class="vf-filter-pill ${videoActiveFilter === 'all' ? 'active' : ''}" data-status-filter="all">Tất cả (${data.videoVault.length})</button>
-      <button class="vf-filter-pill ${videoActiveFilter === 'Ready to Post' ? 'active' : ''}" data-status-filter="Ready to Post">🟢 Sẵn sàng đăng</button>
-      <button class="vf-filter-pill ${videoActiveFilter === 'Client Review' ? 'active' : ''}" data-status-filter="Client Review">🟡 Chờ Brand duyệt</button>
-      <button class="vf-filter-pill ${videoActiveFilter === 'Editing' ? 'active' : ''}" data-status-filter="Editing">🔵 Đang biên tập</button>
-      <button class="vf-filter-pill ${videoActiveFilter === 'Rendering' ? 'active' : ''}" data-status-filter="Rendering">🟣 Đang Render</button>
+      <button class="vf-filter-pill ${videoActiveFilter === 'all' ? 'active' : ''}" data-status-filter="all">Semua (${data.videoVault.length})</button>
+      <button class="vf-filter-pill ${videoActiveFilter === 'Ready to Post' ? 'active' : ''}" data-status-filter="Ready to Post">🟢 Siap Tayang</button>
+      <button class="vf-filter-pill ${videoActiveFilter === 'Client Review' ? 'active' : ''}" data-status-filter="Client Review">🟡 Review Klien</button>
+      <button class="vf-filter-pill ${videoActiveFilter === 'Editing' ? 'active' : ''}" data-status-filter="Editing">🔵 Proses Edit</button>
+      <button class="vf-filter-pill ${videoActiveFilter === 'Rendering' ? 'active' : ''}" data-status-filter="Rendering">🟣 Render</button>
     </div>
 
     <!-- Table Container -->
@@ -118,19 +66,24 @@ export function renderVideoVaultView(data, onShowToast, onStateChanged) {
       <table class="vf-table">
         <thead>
           <tr>
-            <th style="width: 44%;">TÊN DỰ ÁN & FILE</th>
-            <th style="width: 12%;">ĐỊNH DẠNG</th>
-            <th style="width: 14%;">TÀI KHOẢN ĐÍCH</th>
-            <th style="width: 10%;">BIÊN TẬP</th>
-            <th style="width: 10%;">TRẠNG THÁI</th>
-            <th style="width: 10%; text-align: right;">THAO TÁC</th>
+            <th style="width: 44%;">NAMA PROYEK & FILE</th>
+            <th style="width: 12%;">RESOLUSI</th>
+            <th style="width: 14%;">TARGET AKUN</th>
+            <th style="width: 10%;">EDITOR</th>
+            <th style="width: 10%;">STATUS</th>
+            <th style="width: 10%; text-align: right;">AKSI</th>
           </tr>
         </thead>
         <tbody>
           ${list.length === 0 ? `
             <tr>
-              <td colspan="6" style="text-align: center; padding: 40px; color: var(--text-muted);">
-                Không có dự án video nào.
+              <td colspan="6" style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
+                <div style="font-size: 32px; margin-bottom: 8px;">🎞️</div>
+                <div style="font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 4px;">Belum Ada Proyek Video di Antrian</div>
+                <div style="font-size: 12.5px; color: var(--text-muted); max-width: 440px; margin: 0 auto 16px; line-height: 1.5;">
+                  Di sini Anda dapat melacak draft editing, render queue, dan status persetujuan klien. Klik tombol di bawah untuk membuat draft video baru.
+                </div>
+                <button class="btn vf-btn-primary" id="btnEmptyCreateVault">+ Buat Proyek Video Baru</button>
               </td>
             </tr>
           ` : list.map(item => `
@@ -169,8 +122,8 @@ export function renderVideoVaultView(data, onShowToast, onStateChanged) {
               </td>
               <td>
                 <div class="vf-actions-group">
-                  <button class="btn-vf-action btn-vf-sync btn-publish-vault" data-id="${item.id}" title="Đăng sang tab Posted">Đăng</button>
-                  <button class="btn-vf-action btn-vf-delete btn-delete-vault" data-id="${item.id}" title="Xóa dự án">Xóa</button>
+                  <button class="btn-vf-action btn-vf-sync btn-publish-vault" data-id="${item.id}" title="Terbitkan ke Posted">Terbitkan</button>
+                  <button class="btn-vf-action btn-vf-delete btn-delete-vault" data-id="${item.id}" title="Hapus Proyek">Hapus</button>
                 </div>
               </td>
             </tr>
@@ -217,6 +170,10 @@ export function renderVideoVaultView(data, onShowToast, onStateChanged) {
       renderVideoVaultView(data, onShowToast, onStateChanged);
       if (onStateChanged) onStateChanged();
     }
+  });
+
+  container.querySelector('#btnEmptyCreateVault')?.addEventListener('click', () => {
+    container.querySelector('#btnCreateNewVaultVideo')?.click();
   });
 
   // Publish to posted

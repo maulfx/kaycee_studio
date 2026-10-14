@@ -12,40 +12,19 @@ export function renderMemberView(data, onShowToast, onStateChanged) {
   const container = document.getElementById('memberView');
   if (!container) return;
 
-  if (!data.teamMembers) {
+  if (!data.teamMembers || data.teamMembers.length === 0) {
     data.teamMembers = [
       {
         id: 'mem-01',
-        name: 'VaSTuan (Kaycee)',
-        email: 'tuanj765@gmail.com',
-        role: 'Studio Director & Lead VFX',
+        name: 'Kaycee',
+        email: 'owner@kayceestudio.com',
+        role: 'Studio Owner & Content Creator',
         avatar: '/assets/avatar.jpg',
         status: 'Online',
-        projectsCount: 14,
+        projectsCount: (data.videos || []).length,
         isOwner: true
-      },
-      {
-        id: 'mem-02',
-        name: 'Moavy',
-        email: 'moavy.aep@studio.vn',
-        role: 'Senior Motion Designer & Anime Animator',
-        avatar: '/assets/avatar.jpg',
-        status: 'Editing',
-        projectsCount: 8,
-        isOwner: false
-      },
-      {
-        id: 'mem-03',
-        name: 'Kaito SoundLab',
-        email: 'kaito.audio@studio.vn',
-        role: 'Sound Designer & Phonk Producer',
-        avatar: '/assets/avatar.jpg',
-        status: 'Idle',
-        projectsCount: 5,
-        isOwner: false
       }
     ];
-    saveStudioData(data);
   }
 
   let list = data.teamMembers;
@@ -59,18 +38,18 @@ export function renderMemberView(data, onShowToast, onStateChanged) {
     <div class="vf-posted-header">
       <div class="vf-header-left">
         <h2 class="vf-title">Team Members</h2>
-        <p class="vf-sub">Quản lý đội ngũ biên tập viên, nhà sáng tạo nội dung & cộng tác viên</p>
+        <p class="vf-sub">Kelola tim editor, kreator konten, dan kolaborator studio</p>
       </div>
 
       <div class="vf-header-right">
         <div class="vf-search-box">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="vf-search-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="memberSearchInput" class="vf-search-input" placeholder="Tìm thành viên..." value="${memberSearchQuery}" />
+          <input type="text" id="memberSearchInput" class="vf-search-input" placeholder="Cari nama anggota tim..." value="${memberSearchQuery}" />
         </div>
 
         <button class="btn vf-btn-primary" id="btnInviteMember">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-          <span>+ Thêm thành viên</span>
+          <span>+ Tambah Anggota</span>
         </button>
       </div>
     </div>
@@ -78,8 +57,8 @@ export function renderMemberView(data, onShowToast, onStateChanged) {
     <!-- Subtitle Bar -->
     <div class="vf-sub-bar">
       <span class="vf-dot-live"></span>
-      <span>Quyền truy cập thư viện dự án & dữ liệu cục bộ trên máy này</span>
-      <span style="margin-left: auto; color: var(--text-muted); font-size: 11.5px;">Tổng cộng: <b>${list.length}</b> thành viên</span>
+      <span>Hak akses proyek dan aset studio di PC lokal</span>
+      <span style="margin-left: auto; color: var(--text-muted); font-size: 11.5px;">Total: <b>${list.length}</b> anggota</span>
     </div>
 
     <!-- Table Container -->
@@ -87,11 +66,11 @@ export function renderMemberView(data, onShowToast, onStateChanged) {
       <table class="vf-table">
         <thead>
           <tr>
-            <th style="width: 45%;">THÀNH VIÊN</th>
-            <th style="width: 20%;">VAI TRÒ</th>
-            <th style="width: 12%;">DỰ ÁN PHỤ TRÁCH</th>
-            <th style="width: 13%;">TRẠNG THÁI</th>
-            <th style="width: 10%; text-align: right;">THAO TÁC</th>
+            <th style="width: 45%;">ANGGOTA TIM</th>
+            <th style="width: 20%;">PERAN</th>
+            <th style="width: 12%;">PROYEK</th>
+            <th style="width: 13%;">STATUS</th>
+            <th style="width: 10%; text-align: right;">AKSI</th>
           </tr>
         </thead>
         <tbody>
@@ -135,8 +114,8 @@ export function renderMemberView(data, onShowToast, onStateChanged) {
               </td>
               <td>
                 <div class="vf-actions-group">
-                  <button class="btn-vf-action btn-vf-detail btn-contact-mem" data-id="${mem.id}" title="Gửi tin nhắn">Nhắn tin</button>
-                  ${!mem.isOwner ? `<button class="btn-vf-action btn-vf-delete btn-delete-mem" data-id="${mem.id}" title="Xóa thành viên">Xóa</button>` : ''}
+                  <button class="btn-vf-action btn-vf-detail btn-contact-mem" data-id="${mem.id}" title="Hubungi Anggota">Hubungi</button>
+                  ${!mem.isOwner ? `<button class="btn-vf-action btn-vf-delete btn-delete-mem" data-id="${mem.id}" title="Hapus Anggota">Hapus</button>` : ''}
                 </div>
               </td>
             </tr>

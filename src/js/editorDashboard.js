@@ -1,45 +1,45 @@
 import { saveStudioData } from './data.js';
 
-const queue = [
-  { id: 'reel-01', title: 'Valorant clutch montage', client: 'Personal', status: 'Editing', due: 'Today', tag: 'Short-form' },
-  { id: 'reel-02', title: 'ASUS ROG sponsor cut', client: 'ASUS ROG', status: 'Review', due: 'Tomorrow', tag: 'Brand deal' },
-  { id: 'reel-03', title: 'MLBB tournament highlights', client: 'Moonton', status: 'Queued', due: 'Fri, 18 Oct', tag: 'Gaming' }
-];
-
 export function renderEditorDashboard(data, onShowToast = () => {}) {
   const container = document.getElementById('dashboardView') || document.getElementById('editorDeskView');
   if (!container) return;
   const contracts = data.contracts || [];
   const videos = data.videos || [];
+  const queue = data.videoVault || [];
   const activeContracts = contracts.filter(c => c.status === 'active').length;
-  const nextDeadline = contracts.find(c => c.status === 'active')?.brand || 'No brand deadline';
+  const nextDeadline = contracts.find(c => c.status === 'active')?.brand || 'Belum ada deal aktif';
 
   container.innerHTML = `
     <section class="editor-dashboard">
       <div class="editor-hero">
         <div>
-          <div class="eyebrow">EDITOR DESK / ${new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}</div>
-          <h2>Make today’s edit flow.</h2>
-          <p>Your production cockpit for gaming edits, client revisions, and content delivery.</p>
+          <div class="eyebrow">DASHBOARD STUDIO / ${new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</div>
+          <h2>Kaycee Studio Workspace</h2>
+          <p>Pusat kontrol ringkasan produksi konten, kontrak brand aktif, dan antrian video.</p>
         </div>
-        <button class="btn btn-primary" id="editorAddTask">+ Add edit task</button>
       </div>
 
       <div class="editor-stats">
-        <div class="editor-stat"><span>In queue</span><strong>${queue.length}</strong><small>Short-form projects</small></div>
-        <div class="editor-stat"><span>Client revisions</span><strong>${queue.filter(x => x.status === 'Review').length}</strong><small>Needs your attention</small></div>
-        <div class="editor-stat"><span>Active deals</span><strong>${activeContracts}</strong><small>${nextDeadline}</small></div>
-        <div class="editor-stat"><span>Catalogued videos</span><strong>${videos.length}</strong><small>Across your channels</small></div>
+        <div class="editor-stat"><span>Antrian Video</span><strong>${queue.length}</strong><small>Draft di Video Vault</small></div>
+        <div class="editor-stat"><span>Kontrak Aktif</span><strong>${activeContracts}</strong><small>${nextDeadline}</small></div>
+        <div class="editor-stat"><span>Video Terpublikasi</span><strong>${videos.length}</strong><small>Di katalog Posted</small></div>
+        <div class="editor-stat"><span>Akun Terhubung</span><strong>${Object.keys(data.accounts || {}).length}</strong><small>Platform TikTok</small></div>
       </div>
 
       <div class="editor-grid">
         <div class="editing-queue panel-card">
-          <div class="panel-heading"><div><span class="eyebrow">PRODUCTION BOARD</span><h3>Editing Queue</h3></div><span class="live-dot">● Live</span></div>
-          <div class="queue-list">${queue.map(item => `
-            <button class="queue-item" data-edit-id="${item.id}">
-              <span class="queue-play">▶</span><span class="queue-copy"><strong>${item.title}</strong><small>${item.client} · ${item.tag}</small></span>
-              <span class="queue-meta"><b class="status-${item.status.toLowerCase()}">${item.status}</b><small>${item.due}</small></span>
-            </button>`).join('')}</div>
+          <div class="panel-heading"><div><span class="eyebrow">PRODUCTION BOARD</span><h3>Antrian Editing & Render</h3></div><span class="live-dot">● Status</span></div>
+          <div class="queue-list">
+            ${queue.length === 0 ? `
+              <div style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 36px 16px;">
+                Belum ada antrian video. Masuk ke tab <b>Video</b> untuk menambahkan draft proyek.
+              </div>
+            ` : queue.map(item => `
+              <button class="queue-item" data-edit-id="${item.id}">
+                <span class="queue-play">▶</span><span class="queue-copy"><strong>${item.title}</strong><small>${item.targetAccount || 'Personal'} · ${item.resolution || '9:16'}</small></span>
+                <span class="queue-meta"><b class="status-${(item.status || 'draft').toLowerCase().replace(/\s+/g, '-')}">${item.status}</b><small>${item.duration || '0:30'}</small></span>
+              </button>`).join('')}
+          </div>
         </div>
 
         <div class="panel-card focus-card">
