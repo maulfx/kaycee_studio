@@ -3,85 +3,111 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kaycee Studio - Dashboard Multi-Akun TikTok, Kontrak & Event</title>
-  <meta name="description" content="Dashboard manajemen konten TikTok multi-akun, kontrak sponsor brand, proyek ads promo, turnamen game, dan integrasi Hermes AI." />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300f2fe'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>" />
+  <title>Kaycee Studio - VideoFlow Pro</title>
+  <meta name="description" content="Dashboard manajemen konten TikTok multi-akun, video posted, kontrak sponsor, ads promo, turnamen game, dan Hermes AI." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238b5cf6'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>" />
   <link rel="stylesheet" href="/src/css/style.css" />
 </head>
 <body>
   <div class="app-layout">
-    <!-- Sidebar Navigation -->
+    <!-- Sidebar Navigation matching VideoFlow / VaS Studio -->
     <aside class="sidebar">
       <div class="sidebar-header">
-        <div class="brand-badge" title="Kaycee Studio Pro">
-          <div class="brand-logo-icon">KC</div>
+        <div class="brand-badge" title="Kaycee Studio - VideoFlow">
+          <div class="brand-logo-icon" style="background: linear-gradient(135deg, #7c3aed 0%, #38bdf8 100%);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
           <div class="brand-info">
-            <h1>Kaycee Studio</h1>
-            <div class="brand-sub">Creator Hub</div>
+            <h1>VaS Studio</h1>
+            <div class="brand-sub" style="color: #a855f7;">VideoFlow V2.2</div>
           </div>
         </div>
       </div>
 
       <nav class="sidebar-nav">
-        <div class="nav-section-title">Menu Utama</div>
-
-        <a href="#tiktok" class="nav-item active" data-tab="tiktok" id="navTikTok">
+        <a href="#dashboard" class="nav-item" data-tab="dashboard" id="navDashboard">
           <span class="nav-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           </span>
-          <span>TikTok Multi-Akun</span>
-          <span class="nav-badge" id="navTikTokBadge">0 Akun</span>
+          <span>Dashboard</span>
         </a>
 
         <a href="#contracts" class="nav-item" data-tab="contracts" id="navContracts">
           <span class="nav-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
           </span>
-          <span>Manajemen Kontrak</span>
-          <span class="nav-badge" id="navContractsBadge">0 Aktif</span>
+          <span>Contract</span>
         </a>
 
         <a href="#adsPromo" class="nav-item" data-tab="adsPromo" id="navAdsPromo">
           <span class="nav-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
           </span>
-          <span>Ads & Promo Deals</span>
-          <span class="nav-badge" id="navAdsPromoBadge">0 Kode</span>
+          <span>Ads/Promo</span>
         </a>
 
         <a href="#gameEvents" class="nav-item" data-tab="gameEvents" id="navGameEvents">
           <span class="nav-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" x2="10" y1="12" y2="12"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="15" x2="15.01" y1="13" y2="13"/><line x1="18" x2="18.01" y1="11" y2="11"/><rect width="20" height="12" x="2" y="6" rx="2"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           </span>
-          <span>Event & Turnamen Game</span>
-          <span class="nav-badge" id="navGameEventsBadge">0 Event</span>
+          <span>Event</span>
         </a>
 
-        <div class="nav-section-title" style="margin-top: 10px;">Artificial Intelligence</div>
+        <a href="#videoVault" class="nav-item" data-tab="videoVault" id="navVideoVault">
+          <span class="nav-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="15" x="2" y="5" rx="2"/><polygon points="10 9 15 12.5 10 16 10 9"/></svg>
+          </span>
+          <span>Video</span>
+        </a>
+
+        <a href="#posted" class="nav-item active" data-tab="posted" id="navPosted">
+          <span class="nav-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+          </span>
+          <span>Posted</span>
+          <span class="nav-badge" id="navPostedBadge" style="background: rgba(139, 92, 246, 0.2); color: #c084fc;">Hot</span>
+        </a>
+
+        <a href="#source" class="nav-item" data-tab="source" id="navSource">
+          <span class="nav-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          </span>
+          <span>Source</span>
+        </a>
+
+        <a href="#accountPlatform" class="nav-item" data-tab="accountPlatform" id="navAccountPlatform">
+          <span class="nav-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
+          <span>Account Platform</span>
+          <span class="nav-badge" id="navPlatformBadge">2</span>
+        </a>
+
+        <a href="#member" class="nav-item" data-tab="member" id="navMember">
+          <span class="nav-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
+          <span>Member</span>
+        </a>
+
+        <div class="nav-section-title" style="margin-top: 8px;">AI & Utilities</div>
 
         <a href="#aiAgent" class="nav-item" data-tab="aiAgent" id="navAiAgent">
           <span class="nav-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           </span>
           <span>Hermes AI Agent</span>
-          <span class="nav-badge">Online</span>
+          <span class="nav-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">Online</span>
         </a>
       </nav>
 
-      <!-- Sidebar Target Progress -->
-      <div class="sidebar-footer">
-        <div class="target-card">
-          <div class="target-title">
-            <span>Target Revenue</span>
-            <span id="targetPercentage" style="color: var(--accent-emerald); font-weight: 700;">0%</span>
-          </div>
-          <div class="target-amount" id="targetCurrentAmount">Rp 0</div>
-          <div class="target-progress-bar">
-            <div class="target-progress-fill" id="targetProgressBar" style="width: 0%;"></div>
-          </div>
-          <div class="target-sub">
-            <span id="targetGoalLabel">Goal: Rp 0</span>
-            <span id="targetRemainingLabel" style="color: var(--text-muted);">Belum ada kontrak aktif</span>
+      <!-- Sidebar Status Footer matching "Trên máy này / Dữ liệu được lưu cục bộ" -->
+      <div class="sidebar-footer" style="padding: 12px 14px; background: #0b0a12; border-top: 1px solid #1c1a2d;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="width: 7px; height: 7px; border-radius: 50%; background: #10b981; box-shadow: 0 0 6px #10b981; flex-shrink: 0;"></span>
+          <div style="font-size: 11px; line-height: 1.3;">
+            <div style="font-weight: 600; color: #fff;">Trên máy này</div>
+            <div style="color: var(--text-muted); font-size: 10px;">Dữ liệu được lưu cục bộ (Local PC)</div>
           </div>
         </div>
       </div>
@@ -89,51 +115,66 @@
 
     <!-- Main Content Wrapper -->
     <main class="main-wrapper">
-      <!-- Top Navigation Bar -->
-      <header class="topbar">
-        <!-- Multi-Account Switcher -->
-        <div class="account-selector-box" id="accountSwitcherGroup" title="Pilih Akun TikTok untuk Dilihat">
-          <!-- Dynamically populated from connected accounts -->
+      <!-- Top Navigation Bar matching VideoFlow -->
+      <header class="topbar" style="background: #0d0c15; border-bottom: 1px solid #1c1a2d;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div id="topbarPageTitle" style="font-weight: 700; color: #fff; font-size: 15px;">Posted</div>
+          <span style="color: #475569;">/</span>
+          <div id="topbarPageSub" style="color: var(--text-muted); font-size: 12.5px;">Thư viện bài đã đăng của bạn</div>
         </div>
 
-        <!-- Top Right Actions -->
-        <div class="topbar-right">
-          <div class="sync-status" title="Data TikTok tersinkronisasi langsung">
-            <span class="sync-pulse"></span>
-            <span>Live Sync</span>
+        <!-- Top Right Actions: Search + User Profile -->
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <!-- Topbar Search matching screenshot (Tìm kiếm...) -->
+          <div class="topbar-search-box" style="display: flex; align-items: center; background: #141320; border: 1px solid #232038; border-radius: 6px; padding: 4px 10px; gap: 6px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#71717a" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="topbarGlobalSearch" placeholder="Tìm kiếm..." style="background: transparent; border: none; outline: none; color: #fff; font-size: 12px; width: 130px;" />
           </div>
 
-          <button class="btn-ai-quick" id="btnAiQuick" title="Buka Asisten Hermes AI">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <span>Tanya Hermes</span>
-          </button>
+          <!-- Account Switcher Group (for Multi-Account TikTok) -->
+          <div class="account-selector-box" id="accountSwitcherGroup" style="display: flex; gap: 6px;"></div>
 
-          <button class="btn-quick-create" id="btnQuickCreate">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-            <span>+ Buat Baru</span>
-          </button>
-
-          <div class="user-profile-btn" title="Kaycee Profile">
-            <img src="/assets/avatar.jpg" alt="Kaycee" class="user-avatar-img" />
+          <!-- User Profile matching screenshot (VaSTuan / tuanj765@gmail.com) -->
+          <div style="display: flex; align-items: center; gap: 10px; background: #151422; border: 1px solid #232038; padding: 4px 10px 4px 6px; border-radius: 20px; cursor: pointer;" class="user-profile-btn" title="Cài đặt Studio & Dữ liệu">
+            <img src="/assets/avatar.jpg" alt="Kaycee" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;" />
+            <div style="text-align: left; line-height: 1.2;">
+              <div style="font-size: 12px; font-weight: 600; color: #fff;">VaSTuan</div>
+              <div style="font-size: 10px; color: var(--text-muted);">tuanj765@gmail.com</div>
+            </div>
           </div>
         </div>
       </header>
 
       <!-- Page Content Views -->
-      <div class="content-area">
-        <!-- View 1: TikTok Dashboard -->
-        <section id="tiktokView" class="view-section active"></section>
+      <div class="content-area" style="background: #0d0c15;">
+        <!-- View 1: Posted (Matching Screenshot) -->
+        <section id="postedView" class="view-section active"></section>
 
-        <!-- View 2: Contracts Management -->
+        <!-- View 2: Dashboard (Analytics Overview) -->
+        <section id="dashboardView" class="view-section"></section>
+
+        <!-- View 3: Contracts Management -->
         <section id="contractsView" class="view-section"></section>
 
-        <!-- View 3: Ads & Promo Campaigns -->
+        <!-- View 4: Ads & Promo Deals -->
         <section id="adsPromoView" class="view-section"></section>
 
-        <!-- View 4: Game Events -->
+        <!-- View 5: Game Events -->
         <section id="gameEventsView" class="view-section"></section>
 
-        <!-- View 5: Kaycee AI Agent -->
+        <!-- View 6: Video Vault / Production Queue -->
+        <section id="videoVaultView" class="view-section"></section>
+
+        <!-- View 7: Source Assets -->
+        <section id="sourceView" class="view-section"></section>
+
+        <!-- View 8: Account Platform (Multi-Account TikTok) -->
+        <section id="accountPlatformView" class="view-section"></section>
+
+        <!-- View 9: Member Team -->
+        <section id="memberView" class="view-section"></section>
+
+        <!-- View 10: Hermes AI Agent -->
         <section id="aiAgentView" class="view-section"></section>
       </div>
     </main>
@@ -153,6 +194,14 @@
 
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toastContainer"></div>
+
+  <!-- VideoFlow Status Banner matching screenshot -->
+  <div class="vf-bottom-floating-pill">
+    <span style="color: #6366f1; font-weight: 700;">||</span>
+    <span class="vf-pill-tag">New App VideoFlow</span>
+    <span class="vf-pill-sep">— Coming Soon!</span>
+    <span class="vf-pill-text">VideoFlow is still in development, and I'm currently working on adding multi-language support.</span>
+  </div>
 
   <!-- Main JavaScript Entrypoint -->
   <script type="module" src="/src/js/main.js"></script>

@@ -17,15 +17,21 @@ import {
 import { renderContractsView } from './contracts.js';
 import { renderAdsPromoView } from './adsPromo.js';
 import { renderGameEventsView } from './gameEvents.js';
+import { renderEditorDashboard } from './editorDashboard.js';
 import { 
   renderAiAgentView, 
   askAiAboutVideoHelper, 
   askAiAboutContractHelper, 
   askAiAboutEventHelper 
 } from './aiAgent.js';
+import { renderPostedView } from './postedView.js';
+import { renderAccountPlatformView } from './accountPlatformView.js';
+import { renderVideoVaultView } from './videoVaultView.js';
+import { renderSourceView } from './sourceView.js';
+import { renderMemberView } from './memberView.js';
 
 let appState = null;
-let currentTab = 'tiktok';
+let currentTab = 'posted';
 
 /**
  * Toast Notification Dispatcher
@@ -75,6 +81,27 @@ export function switchTab(tabId) {
   const targetSection = document.getElementById(`${tabId}View`);
   if (targetSection) {
     targetSection.classList.add('active');
+  }
+
+  // Update topbar title & subtext matching VideoFlow
+  const pageTitle = document.getElementById('topbarPageTitle');
+  const pageSub = document.getElementById('topbarPageSub');
+  const tabTitles = {
+    posted: { title: 'Posted', sub: 'Thư viện bài đã đăng của bạn' },
+    dashboard: { title: 'Dashboard', sub: 'Tổng quan hiệu suất & tiến độ studio' },
+    contracts: { title: 'Contract', sub: 'Quản lý hợp đồng tài trợ & Brand Deals' },
+    adsPromo: { title: 'Ads/Promo', sub: 'Chiến dịch quảng cáo & mã khuyến mãi' },
+    gameEvents: { title: 'Event', sub: 'Lịch sự kiện & giải đấu gaming' },
+    videoVault: { title: 'Video', sub: 'Kho video & tiến độ sản xuất nội dung' },
+    source: { title: 'Source', sub: 'Kho tài nguyên footage thô, VFX & âm thanh' },
+    accountPlatform: { title: 'Account Platform', sub: 'Quản lý các tài khoản TikTok kết nối' },
+    member: { title: 'Member', sub: 'Đội ngũ sáng tạo & biên tập viên' },
+    aiAgent: { title: 'Hermes AI Agent', sub: 'Trợ lý AI phân tích kịch bản & tối ưu hóa' }
+  };
+
+  if (tabTitles[tabId]) {
+    if (pageTitle) pageTitle.textContent = tabTitles[tabId].title;
+    if (pageSub) pageSub.textContent = tabTitles[tabId].sub;
   }
 
   // Re-render target view
@@ -246,15 +273,43 @@ export function updateSidebarMetrics() {
 function renderCurrentView() {
   updateSidebarMetrics();
 
-  if (currentTab === 'tiktok') {
-    renderTikTokView(
+  if (currentTab === 'posted') {
+    renderPostedView(
       appState,
-      (videoTitle) => askAiAboutVideoHelper(videoTitle, appState, showToast, switchTab),
       showToast,
       () => {
         renderAccountSwitcher();
-        renderCurrentView();
+        updateSidebarMetrics();
       }
+    );
+  } else if (currentTab === 'accountPlatform') {
+    renderAccountPlatformView(
+      appState,
+      showToast,
+      () => {
+        renderAccountSwitcher();
+        updateSidebarMetrics();
+      }
+    );
+  } else if (currentTab === 'dashboard' || currentTab === 'editorDesk') {
+    renderEditorDashboard(appState, showToast);
+  } else if (currentTab === 'videoVault') {
+    renderVideoVaultView(
+      appState,
+      showToast,
+      () => updateSidebarMetrics()
+    );
+  } else if (currentTab === 'source') {
+    renderSourceView(
+      appState,
+      showToast,
+      () => updateSidebarMetrics()
+    );
+  } else if (currentTab === 'member') {
+    renderMemberView(
+      appState,
+      showToast,
+      () => updateSidebarMetrics()
     );
   } else if (currentTab === 'contracts') {
     renderContractsView(
@@ -276,6 +331,16 @@ function renderCurrentView() {
     );
   } else if (currentTab === 'aiAgent') {
     renderAiAgentView(appState, showToast);
+  } else if (currentTab === 'tiktok') {
+    renderTikTokView(
+      appState,
+      (videoTitle) => askAiAboutVideoHelper(videoTitle, appState, showToast, switchTab),
+      showToast,
+      () => {
+        renderAccountSwitcher();
+        renderCurrentView();
+      }
+    );
   }
 }
 
@@ -405,9 +470,9 @@ function initApp() {
   initModalListeners();
   initQuickCreate();
 
-  // Brand logo click goes to TikTok dashboard
+  // Brand logo click goes to Posted dashboard
   document.querySelector('.brand-badge')?.addEventListener('click', () => {
-    switchTab('tiktok');
+    switchTab('posted');
   });
 
   // Profile button opens Studio Settings & Data Manager
@@ -476,12 +541,25 @@ function initApp() {
     modal.classList.add('open');
   });
 
+  // Topbar global search sync
+  const topbarSearch = document.getElementById('topbarGlobalSearch');
+  if (topbarSearch) {
+    topbarSearch.addEventListener('input', (e) => {
+      const val = e.target.value;
+      const postedSearch = document.getElementById('postedSearchInput');
+      if (postedSearch) {
+        postedSearch.value = val;
+        postedSearch.dispatchEvent(new Event('input'));
+      }
+    });
+  }
+
   // Render dynamic account switcher in topbar
   renderAccountSwitcher();
 
-  // Render initial tab
-  switchTab('tiktok');
-  console.log('🚀 Kaycee Studio Pro initialized successfully!');
+  // Render initial workspace: Posted view matching VideoFlow reference
+  switchTab('posted');
+  console.log('🚀 Kaycee Studio VideoFlow initialized successfully!');
 }
 
 document.addEventListener('DOMContentLoaded', initApp);
